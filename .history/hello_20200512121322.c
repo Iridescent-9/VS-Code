@@ -25,5 +25,5 @@ int main()
 	getchar();
 	return 0; 
 	//还是没有？
-	//如何l s
+	//如何hh
 }
