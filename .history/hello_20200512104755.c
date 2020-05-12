@@ -1,5 +1,5 @@
 #include <stdio.h>
-int main()
+void main()
 {
 	int a[3][3] = {1, 3, 6, 7, 9, 11, 14, 15, 17}, sum1 = 0, sum2 = 0, i, j;
 	for (i = 0; i < 3; i++)
@@ -23,6 +23,4 @@ int main()
 	printf("hello world");
 	
 	getchar();
-	return 0; 
-	//还是没有？
 }

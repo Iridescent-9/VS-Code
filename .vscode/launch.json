@@ -1,6 +1,7 @@
 {
     "version": "0.2.0", //配置版本
     "configurations": [
+
         {
             // 配置名称，在启动配置下拉菜单中显示
             "name": "(gdb) Launch", 

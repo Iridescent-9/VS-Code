@@ -23,6 +23,5 @@ int main()
 	printf("hello world");
 	
 	getchar();
-	return 0; 
-	//还是没有？
+	return 0;
 }

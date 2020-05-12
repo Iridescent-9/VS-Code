@@ -24,5 +24,5 @@ int main()
 	
 	getchar();
 	return 0; 
-	//还是没有？
+	
 }
