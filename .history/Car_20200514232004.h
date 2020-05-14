@@ -59,7 +59,6 @@ void car::car_print ( )
 	itime_print ( ); 
 	cout << "  ";
 	otime_print ( );
-	cout<<endl;
 	cout.fill('-');cout.width(70);cout<<"-"<<endl;
 }
 void car::set_itime ( int ih , int im , int is )

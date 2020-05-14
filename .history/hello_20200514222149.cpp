@@ -21,7 +21,7 @@ int main ( )
 	c1.set_otime ( 22 , 26 , 15 );
 	c1.car_base ( );
 	c1.car_print ( );
-	c1.get_num( );
+	c1.get_number( );
 	getchar();
 	return 0;
 }

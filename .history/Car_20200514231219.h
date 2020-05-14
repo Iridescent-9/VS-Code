@@ -35,32 +35,23 @@ car::car ( )
 }
 void car::car_base( )
 {
-	cout.fill('-');cout.width(70);cout<<"-"<<endl;
+	int i;
+	cout.fill('-');
+	cout.width(70);
+	cout<<"-"<<endl;
 	cout<<" "<<"车辆信息:"<<endl;
-	cout.fill(' ');cout.width(10);
-	cout<<" "<<"车牌号:" << car_num <<endl;
-	cout.fill(' ');cout.width(10);
-	cout<<" "<< "车的颜色:" <<color<<endl; 
-	cout.fill(' ');cout.width(10);
-	cout<< " " << "车型:" << type<<endl;
-	cout.fill('-');cout.width(70);cout<<"-"<<endl;
+	cout.fill(' ');
+	cout.width(10);
+	cout<<" ";cout<<"车牌号:" << car_num << "  " << "车的颜色:" << color << "  " << "车型:" << type << "  " << endl;
+	cout<<car_num.length();
 }
 void car::car_print ( )
 {
-	cout.fill('-');cout.width(70);cout<<"-"<<endl;
-	cout<<" "<<"车辆信息:"<<endl;
-	cout.fill(' ');cout.width(10);
-	cout<<" "<<"车牌号:" << car_num <<endl;
-	cout.fill(' ');cout.width(10);
-	cout<<" "<< "车的颜色:" <<color<<endl; 
-	cout.fill(' ');cout.width(10);
-	cout<< " " << "车型:" << type<<endl;
-	cout.fill(' ');cout.width(10);cout<<" ";
+	cout << "车牌号:" << car_num << "  " << "车的颜色:" << color << "  " << "车型:" << type<<"  ";
 	itime_print ( ); 
 	cout << "  ";
 	otime_print ( );
-	cout<<endl;
-	cout.fill('-');cout.width(70);cout<<"-"<<endl;
+	cout << endl;
 }
 void car::set_itime ( int ih , int im , int is )
 {
