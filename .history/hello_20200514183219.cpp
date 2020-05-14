@@ -1,6 +1,5 @@
 #include<iostream>
 #include<string.h>
-#include<string>
 #include"Car.h"
 using namespace std;
 int main ( )

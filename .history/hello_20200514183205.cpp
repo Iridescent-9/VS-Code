@@ -1,6 +1,5 @@
 #include<iostream>
 #include<string.h>
-#include<string>
 #include"Car.h"
 using namespace std;
 int main ( )
@@ -14,7 +13,6 @@ int main ( )
 	c1.car_base ( );
 	c1.car_print ( );
 	c1.get_number( );
-	getchar();
 	return 0;
 }
 //==================================================//
