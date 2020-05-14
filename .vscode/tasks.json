@@ -6,7 +6,7 @@
             "type": "shell",
             // 编译参数 ggc -g ${file} -o ${fileDirname}${fileBasenameNoExtension}.exe
             "windows": {
-                "command": "gcc",
+                "command": "g++",
                 "args": [
                     "-g",
                     "\"${file}\"",
