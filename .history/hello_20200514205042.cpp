@@ -5,18 +5,14 @@
 using namespace std;
 int main ( )
 {
-	/*string car_num,color,type;
-	cout<<"输入车牌号：";getline(cin,car_num);
-	cout<<"输入车颜色：";getline(cin,color);
-	cout<<"输入车型：";getline(cin,type);
+	string car_num,color,type;
+	cout<<"输入车牌号：";cin>>car_num;
+	cout<<"输入车颜色：";cin>>color;
+	cout<<"输入车型：";cin>>type;
+	car c1;
 	c1.set_car_num ( car_num );
 	c1.set_color ( color );
 	c1.set_type ( type );
-	*/
-	car c1;
-	c1.set_car_num ( "陕AW6E67" );
-	c1.set_color ( "紫色" );
-	c1.set_type ( "SUV" );
 	c1.set_itime ( 16 , 24 , 36 );
 	c1.set_otime ( 22 , 26 , 15 );
 	c1.car_base ( );

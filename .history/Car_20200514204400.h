@@ -8,8 +8,8 @@ class car:public Time
 {
 protected:
 	string car_num;//车牌号 a
-	string color;//颜色 b
-	string type;//车的型号 c
+	char *color;//颜色 b
+	char *type;//车的型号 c
 	Time  itime;//到达时间
 	Time  otime;//离开时间
 public:
@@ -21,15 +21,13 @@ public:
 	void otime_print ( );//输出离开时间
 	void car_print ( );//查询时使用
 	void set_car_num ( string a );//设置车牌号
-	void set_color ( string b );//设置车的颜色
-	void set_type ( string c );//设置车的车型
+	void set_color ( const char* b );//设置车的颜色
+	void set_type ( const char* c );//设置车的车型
 	void get_number();//得到车牌号
 };
 void car::car_base( )
 {
-	int i;
 	cout << "车辆信息: 车牌号:" << car_num << "  " << "车的颜色:" << color << "  " << "车型:" << type << "  " << endl;
-	cout<<car_num.length();
 }
 void car::car_print ( )
 {
@@ -62,20 +60,26 @@ void car::otime_print ( )
 car::car ( )
 {
 	car_num = ' ';
-	color = ' ';
-	type = ' ';
+	color = NULL;
+	type = NULL;
 }
 void car::set_car_num( string a )
 {
 	car_num=a;
 }
-void car::set_color ( string b )
+void car::set_color ( const char* b )
 {
-	color=b;
+	int w;
+	color = new char [ strlen ( b ) + 1 ];
+	w = strlen ( b ) + 1;
+	strcpy( color, b );
 }
-void car::set_type ( string c )
+void car::set_type ( const char* c )
 {
-	type=c;
+	int e;
+	type = new char [ strlen ( c ) + 1 ];
+	e = strlen ( c ) + 1;
+	strcpy ( type, c );
 }
 void car::get_number()
 {

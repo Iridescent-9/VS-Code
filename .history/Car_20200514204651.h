@@ -27,9 +27,7 @@ public:
 };
 void car::car_base( )
 {
-	int i;
 	cout << "车辆信息: 车牌号:" << car_num << "  " << "车的颜色:" << color << "  " << "车型:" << type << "  " << endl;
-	cout<<car_num.length();
 }
 void car::car_print ( )
 {
