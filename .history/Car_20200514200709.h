@@ -82,7 +82,7 @@ void car::set_type ( const char* c )
 	int e;
 	type = new char [ strlen ( c ) + 1 ];
 	e = strlen ( c ) + 1;
-	strcpy ( type, c );
+	strcpy ( type , c );
 }
 void car::get_number()
 {
