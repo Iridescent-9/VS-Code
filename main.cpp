@@ -1,4 +1,4 @@
-#include<iostream>
+ï»¿#include<iostream>
 #include<string.h>
 #include<string>
 #include<Windows.h>
@@ -9,48 +9,51 @@ void start ( );
 void copyright ( );
 int main ( )
 {
-	start ( );
-	copyright ( );
+	//start ( );
+	//copyright ( );
 	menu ( );
 	system ( "CLS" );
 	system ( "color 05" );
-	cout << endl<<endl<<endl<<"¸ÐÐ»Ê¹ÓÃ£¬ÔÙ¼û";
+	cout << endl << endl << endl << "æ„Ÿè°¢ä½¿ç”¨ï¼Œå†è§";
 	Sleep ( 2000 );
 	return 0;
 }
 int menu ( )
 {
-	manage k1 ( 3 );
+	manage k1;
 	while ( 1 )
 	{
 		cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "1.Í£³µ½øÈë³µ¿â" << endl;
+		cout << " " << "1.åœè½¦è¿›å…¥è½¦åº“" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "2.Àë¿ª³µ¿â" << endl;
+		cout << " " << "2.ç¦»å¼€è½¦åº“" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "3.²éÑ¯ÐÅÏ¢" << endl;
+		cout << " " << "3.æŸ¥è¯¢ä¿¡æ¯" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "4.ÐÞ¸ÄÐÅÏ¢" << endl;
+		cout << " " << "4.ä¿®æ”¹ä¿¡æ¯" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "5.ÏÔÊ¾ÒÑÔÚ³µ¿â³µÁ¾ÐÅÏ¢" << endl;
+		cout << " " << "5.æ˜¾ç¤ºå·²åœ¨è½¦åº“è½¦è¾†ä¿¡æ¯" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "6.É¾³ý³µÁ¾ÐÅÏ¢" << endl;
+		cout << " " << "6.åˆ é™¤è½¦è¾†ä¿¡æ¯" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "7.Í£³µ³¡Í³¼ÆÐÅÏ¢" << endl;
+		cout << " " << "7.åœè½¦åœºç»Ÿè®¡ä¿¡æ¯" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "8.ÇåÆÁ" << endl;
+		cout << " " << "8.æ¸…å±" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "9.ÍË³öÏµÍ³" << endl;
+		cout << " " << "9.é€€å‡ºç³»ç»Ÿ" << endl;
+		cout << "åœè½¦æ¯å°æ—¶3å…ƒï¼Œåœè½¦åŠå°æ—¶å†…ä¸æ”¶è´¹" << endl;
 		cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
-		cout << "ÊäÈë¹¦ÄÜÐòºÅ" << endl;
-		int n;
-		cin >> n; cin.ignore ( );
+		cout << "è¾“å…¥åŠŸèƒ½åºå·" << endl;
+		int n = 0;
+		string c;
+		n = choice_19 ( c );
+		cin.ignore ( );
 		switch ( n )
 		{
 			case 1:
 				k1.Add ( );
-				k1.display();
+				k1.display ( );
 				break;
 			case 2:
 				k1.car_leave ( );
@@ -60,7 +63,6 @@ int menu ( )
 				break;
 			case 4:
 				k1.change ( );
-				k1.display( );
 				break;
 			case 5:
 				k1.display ( );
@@ -79,28 +81,28 @@ int menu ( )
 				break;
 		}
 	}
-	end0:
+end0:
 	return 0;
 }
 void start ( )
 {
-	cout << endl << endl << endl<<endl<<endl<<endl;
+	cout << endl << endl << endl << endl << endl << endl;
 	system ( " color 02" );
 	int all_block_num = 100;
 	for ( int i = 0; i < all_block_num; i++ )
 	{
 		if ( i < all_block_num - 1 )
 		{
-			printf ( "\r¶ÁÈ¡ÖÐ[%.3lf%%]:" , i * 100.0 / ( all_block_num - 1 ) );
+			printf ( "\rè¯»å–ä¸­[%.3lf%%]:" , i * 100.0 / ( all_block_num - 1 ) );
 		}
 		else
 		{
-			printf ( "\r¶ÁÈ¡Íê³É[%.3lf%%]:" , i * 100.0 / ( all_block_num - 1 ) );
+			printf ( "\rè¯»å–å®Œæˆ[%.3lf%%]:" , i * 100.0 / ( all_block_num - 1 ) );
 		}
 		int show_num = i * 10 / all_block_num;
 		for ( int j = 1; j <= show_num; j++ )
 		{
-			cout << "¨€";
+			cout << "â–ˆ";
 			Sleep ( 10 );
 		}
 	}
@@ -113,7 +115,7 @@ void copyright ( )
 	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
 	cout << endl << endl << endl;
 	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "»¶Ó­Ê¹ÓÃÍ£³µ³¡¹ÜÀíÏµÍ³" << endl << endl << endl;
+	cout << " " << "æ¬¢è¿Žä½¿ç”¨åœè½¦åœºç®¡ç†ç³»ç»Ÿ" << endl << endl << endl;
 	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
 	Sleep ( 3000 );
 	system ( "CLS" );
@@ -132,9 +134,10 @@ void copyright ( )
 	system ( "CLS" );
 	system ( "color 07" );
 }
+
 //==================================================//
 //            Copyright@ Han 2020                   //
 //            Author:    Han                        //
 //            Email:     syhan1228@vip.qq.com       //
-//            Time:      2020-05-20 12:11:20        //
+//            Time:      2020-06-02 19:03:26        //
 //==================================================//

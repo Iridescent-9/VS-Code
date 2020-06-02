@@ -1,73 +1,81 @@
-#pragma once
+ï»¿#pragma once
 #include<iostream>
 #include<string.h>
 #include<Windows.h>
+#include<fstream>
 #include"Car.h"
-#include"calculate.h"
+#include"function.h"
+#define N 3
 using namespace std;
 class manage :public car
 {
-	car cars [ 500 ] , k , * le;//¶ÔÏóÊı×éacrs£¬ÅÅĞòÊ±ÓÃµ½k£¬¼ÆËã½ğ¶îÊ±ÓÃµ½ *le
-	int count = 0;//×Ü¼ÇÂ¼Êı
-	int ps , ps_s;//×Ü³µÎ»Êı£¬Ê£Óà³µÎ»Êı Parking space
-	int capacity = 500;//×î´ó¼ÇÂ¼Êı
-	int leave;//Àë¿ª³µ¿âÊ±Ê¹ÓÃ
-	int car_s=0 , lorry_s=0 , lorry_m=0 , lorry_l=0;//Ğ¡Æû³µ£¬Ğ¡¿¨£¬ÖĞ¿¨£¬´ó¿¨
+	car cars [ 500 ] , k , empty , * le;//å¯¹è±¡æ•°ç»„acrsï¼Œåˆ é™¤ç¦»å¼€æ—¶ç”¨åˆ°emptyï¼Œæ’åºæ—¶ç”¨åˆ°kï¼Œè®¡ç®—é‡‘é¢æ—¶ç”¨åˆ° *le
+	int count = 0;//æ€»è®°å½•æ•°
+	int ps = N , ps_s = N;//æ€»è½¦ä½æ•°ï¼Œå‰©ä½™è½¦ä½æ•° Parking space
+	int capacity = 500;//æœ€å¤§è®°å½•æ•°
+	int leave = 499;//ç¦»å¼€è½¦åº“æ—¶ä½¿ç”¨
+	int car_s = 0 , lorry_s = 0 , lorry_m = 0 , lorry_l = 0;//å°æ±½è½¦ï¼Œå°å¡ï¼Œä¸­å¡ï¼Œå¤§å¡
 public:
-	manage ( int ps0 );
+	manage ( );
 	~manage ( ) { }
-	int Add ( );//Èë¿â
-	int search ( );//²éÕÒ
-	int change ( );//ĞŞ¸Ä
-	int car_leave ( );//³µÀë¿ª³µ¿â
-	int car_delete ( );//É¾³ı
-	void sort ( );//°´ÕÕµ½´ïÊ±¼äµÄÅÅĞò
-	void display ( );//ÏÔÊ¾ÔÚ³µÎ»³µÁ¾È«²¿ĞÅÏ¢
-	void price_c (int n,int a );//¼ÆËã½ğ¶î
-	void statistics_model_plus (int n );//Í³¼Æ³µĞÍ,Ôö¼Ó
-	void statistics_model_minus ( int n );//Í³¼Æ³µĞÍ£¬¼õÉÙ
-	void print_statistic ( );//Êä³öÍ³¼ÆĞÅÏ¢
+	int Add ( );//å…¥åº“
+	int search ( );//æŸ¥æ‰¾
+	int change ( );//ä¿®æ”¹
+	int car_leave ( );//è½¦ç¦»å¼€è½¦åº“
+	int car_delete ( );//åˆ é™¤
+	int statistics_model ( int n );//ç»Ÿè®¡è½¦å‹ï¼Œä¿®æ”¹å‡½æ•°è°ƒç”¨
+	void sort ( );//æŒ‰ç…§åˆ°è¾¾æ—¶é—´çš„æ’åº
+	void display ( );//æ˜¾ç¤ºåœ¨è½¦ä½è½¦è¾†å…¨éƒ¨ä¿¡æ¯
+	void price_c ( int n , int a );//è®¡ç®—é‡‘é¢
+	void statistics_model_plus ( int n );//ç»Ÿè®¡è½¦å‹,å¢åŠ 
+	void statistics_model_minus ( int n );//ç»Ÿè®¡è½¦å‹ï¼Œå‡å°‘
+	void print_statistic ( );//è¾“å‡ºç»Ÿè®¡ä¿¡æ¯
+	void info ( car* info );//è¯»å–è½¦è¾†ä¿¡æ¯
 };
-manage::manage ( int ps0 )
+
+manage::manage ( )
 {
-	ps = ps0;
-	ps_s = ps0;
-	leave = 499;
+	info ( cars );
 }
+
 int manage::Add ( )
 {
-	string a , b;//³µÁ¾ĞÅÏ¢£¬a¡ª¡ª³µÅÆ£¬b¡ª¡ªÑÕÉ«
-	int c;//³µĞÍ
+	string a , b;//è½¦è¾†ä¿¡æ¯ï¼Œaâ€”â€”è½¦ç‰Œï¼Œbâ€”â€”é¢œè‰²
+	int c;//è½¦å‹
 	int l;
-	int iy = 0 , imo = 0 , id = 0 , ih = 0 , im = 0 , is = 0;//½øÈë³µ¿âÊ±¼ä
+	int iy = 0 , imo = 0 , id = 0 , ih = 0 , im = 0 , is = 0;//è¿›å…¥è½¦åº“æ—¶é—´
 part1:
 	{
-		if ( ps_s == 0 )//ÅĞ¶Ï³µ¿âÊÇ·ñÒÑÂú
+		if ( ps_s == 0 )//åˆ¤æ–­è½¦åº“æ˜¯å¦å·²æ»¡
 		{
-			cout << "³µ¿âÒÑÂú" << endl;
+			cout << "è½¦åº“å·²æ»¡" << endl;
 			goto part2;
 		}
 		else
 		{
-			cout << "³µ¿â»¹ÓĞ" << ps_s << "¸öÍ£³µÎ»" << endl;
-			cout << "ÊÇ·ñ½øÈë³µ¿â£º1.ÊÇ 2.·ñ" << endl; cin >> l; cin.ignore ( );
+			cout << "è½¦åº“è¿˜æœ‰" << ps_s << "ä¸ªåœè½¦ä½" << endl;
+			cout << "æ˜¯å¦è¿›å…¥è½¦åº“ï¼š1.æ˜¯ 2.å¦" << endl;
+			string t;
+			l = choice_12 ( t );
+			cin.ignore ( );
 			if ( l == 2 )
 			{
 				goto part2;
 			}
 		}
-		cout << "ÊäÈëÒª½øÈë³µ¿âµÄ³µÁ¾ĞÅÏ¢" << endl;
-		cout << "³µÅÆºÅ£º";
+		cout << "è¾“å…¥è¦è¿›å…¥è½¦åº“çš„è½¦è¾†ä¿¡æ¯" << endl;
+		cout << "è½¦ç‰Œå·ï¼š";
 		getline ( cin , a );
 		for ( int i = 0; i < ps; i++ )
 		{
 			if ( a == cars [ i ].get_num ( ) )
 			{
-				cout << "±¾³µÁ¾ÒÑ¾­Èë¿â" << endl;
-				cout << "ÊÇ·ñĞŞ¸ÄÔ¤Èë¿â³µÁ¾ĞÅÏ¢£»1.ÊÇ 2.·ñ" << endl;
+				cout << "æœ¬è½¦è¾†å·²ç»å…¥åº“" << endl;
+				cout << "æ˜¯å¦ä¿®æ”¹é¢„å…¥åº“è½¦è¾†ä¿¡æ¯ï¼›1.æ˜¯ 2.å¦" << endl;
 				int j = 0;
-				cin >> j;
-				cin.ignore ( );//Çå³ıÒÔ»Ø³µ½áÊøµÄ»º³åÇøÄÚÈİ£¬Ïû³ıÉÏÒ»´ÎÊäÈë¶ÔÏÂÒ»´ÎÊäÈëµÄÓ°Ïì
+				string t;
+				j = choice_12 ( t );
+				cin.ignore ( );
 				if ( j == 1 )
 				{
 					goto part1;
@@ -88,15 +96,18 @@ part1:
 			}
 		s:
 			{
-				cout << "ÇëÊäÈë³µÁ¾ÑÕÉ«£º"; getline ( cin , b );
-				cout << "ÇëÊäÈë³µĞÍ£¨ºÅÂë£©£º1.Ğ¡Æû³µ 2.Ğ¡¿¨ 3.ÖĞ¿¨ 4.´ó¿¨" << endl; cin >> c;
-				cout << "ÇëÊäÈë½øÈë³µ¿âÊ±¼ä" << endl;
-				cout << "Äê£º"; cin >> iy;
-				cout << "ÔÂ£º"; cin >> imo;
-				cout << "ÈÕ£º"; cin >> id;
-				cout << "Ê±£º"; cin >> ih;
-				cout << "·Ö£º"; cin >> im;
-				cout << "Ãë£º"; cin >> is;
+				cout << "è¯·è¾“å…¥è½¦è¾†é¢œè‰²ï¼š"; getline ( cin , b );
+				cout << "è¯·è¾“å…¥è½¦å‹ï¼ˆå·ç ï¼‰ï¼š1.å°æ±½è½¦ 2.å°å¡ 3.ä¸­å¡ 4.å¤§å¡" << endl;
+				string t1;
+				c = choice_14 ( t1 );
+				cin.ignore ( );
+				cout << "è¯·è¾“å…¥è¿›å…¥è½¦åº“æ—¶é—´" << endl;
+				cout << "å¹´ï¼š"; cin >> iy;
+				cout << "æœˆï¼š"; cin >> imo;
+				cout << "æ—¥ï¼š"; cin >> id;
+				cout << "æ—¶ï¼š"; cin >> ih;
+				cout << "åˆ†ï¼š"; cin >> im;
+				cout << "ç§’ï¼š"; cin >> is;
 				statistics_model_plus ( c );
 				le = &cars [ j ];
 				le->set_car_num ( a );
@@ -107,12 +118,13 @@ part1:
 				{
 					count++;
 					ps_s--;
-					cout << "µÚ" << count << "Á¾³µÈë¿â³É¹¦    " << "³µ¿â»¹ÓĞ" << ps_s << "¸ö¿Õ³µÎ»" << endl;
+					cout << "ç¬¬" << count << "è¾†è½¦å…¥åº“æˆåŠŸ   " << "è½¦åº“è¿˜æœ‰" << ps_s << "ä¸ªç©ºè½¦ä½" << endl;
 				}
 				sort ( );
-				cout << "ÊÇ·ñ¼ÌĞøÌí¼Ó£»1.ÊÇ 2£¬·ñ" << endl;
+				cout << "æ˜¯å¦ç»§ç»­æ·»åŠ ï¼›1.æ˜¯ 2ï¼Œå¦" << endl;
 				int j = 0;
-				cin >> j;
+				string t;
+				j = choice_12 ( t );
 				cin.ignore ( );
 				if ( j == 2 )
 				{
@@ -126,40 +138,44 @@ part1:
 part2:
 	return 0;
 }
+
 void manage::display ( )
 {
-	cout << "ÒÔÏÂÎª³µ¿â³µÁ¾ĞÅÏ¢" << endl;
+	cout << "ä»¥ä¸‹ä¸ºè½¦åº“è½¦è¾†ä¿¡æ¯" << endl;
 	for ( int i = 0; i < ps; i++ )
 	{
 		cars [ i ].car_base ( );
 	}
 	cout << endl;
 }
+
 int manage::search ( )
 {
 	int a , i;
-	string b;//³µÅÆºÅ
-	int c;//³µĞÍ
-	cout << "ÇëÊäÈë²éÑ¯³µÁ¾ĞÅÏ¢·½Ê½: 1.°´ÕÕ³µÅÆºÅ²éÑ¯  2.°´ÕÕ³µĞÍ²éÑ¯" << endl;
-	cin >> a;
+	string b;//è½¦ç‰Œå·
+	int c;//è½¦å‹
+	cout << "è¯·è¾“å…¥æŸ¥è¯¢è½¦è¾†ä¿¡æ¯æ–¹å¼:  1.æŒ‰ç…§è½¦ç‰Œå·æŸ¥è¯¢  2.æŒ‰ç…§è½¦å‹æŸ¥è¯¢" << endl;
+	string t;
+	a = choice_12 ( t );
 	cin.ignore ( );
 	if ( count == 0 )
 	{
-		cout << "ÀúÊ·¼ÇÂ¼Îª¿Õ!" << endl;
+		cout << "å†å²è®°å½•ä¸ºç©º!" << endl;
 	}
 	switch ( a )
 	{
 		case 1:
 			{
-				cout << "ÇëÊäÈëÄãÒª²éÑ¯µÄ³µÅÆºÅ:" << endl;
+				cout << "è¯·è¾“å…¥ä½ è¦æŸ¥è¯¢çš„è½¦ç‰Œå·:" << endl;
 				getline ( cin , b );
 				for ( i = 0; i < capacity; i++ )
 				{
 					if ( b == cars [ i ].get_num ( ) )
 					{
-						if ( cars [ i ].get_state()=="in")
+						if ( cars [ i ].get_state ( ) == "in" )
 						{
 							cars [ i ].car_base ( );
+							goto e;
 						}
 						else
 						{
@@ -168,26 +184,32 @@ int manage::search ( )
 								if ( cars [ j ].get_state ( ) == "leave" )
 								{
 									cars [ j ].car_history ( );
+									goto e;
 								}
 							}
 						}
 					}
-					if ( i == capacity )
+					if ( i + 1 == capacity )
 					{
-						cout << "ÀúÊ·¼ÇÂ¼Îª¿Õ£¡" << endl;
+						cout << "å†å²è®°å½•ä¸ºç©ºï¼" << endl;
 						break;
 					}
 				}
-			};	break;
+			};
+		e:
+			break;
 		case 2:
 			{
-				cout << "ÇëÊäÈë²éÑ¯µÄ³µµÄ³µĞÍÊı×Ö(1.Ğ¡Æû³µ 2.Ğ¡¿¨ 3.ÖĞ¿¨ 4.´ó¿¨):";
-				cin >> c;
+				cout << "è¯·è¾“å…¥æŸ¥è¯¢çš„è½¦çš„è½¦å‹æ•°å­—(1.å°æ±½è½¦ 2.å°å¡ 3.ä¸­å¡ 4.å¤§å¡):" << endl;
+				string t1;
+				c = choice_14 ( t1 );
+				cin.ignore ( );
+				statistics_model ( c );
 				for ( i = 0; i < capacity; i++ )
 				{
-					if ( c == cars[i].get_type_unm( ))
+					if ( c == cars [ i ].get_type_unm ( ) )
 					{
-						if ( cars [ i ].get_state( )=="in")
+						if ( cars [ i ].get_state ( ) == "in" )
 						{
 							cars [ i ].car_base ( );
 						}
@@ -202,29 +224,27 @@ int manage::search ( )
 							}
 						}
 					}
-					if ( i == capacity )
-					{
-						cout << "ÀúÊ·¼ÇÂ¼Îª¿Õ!" << endl;
-						break;
-					}
 				}
-			}; break;
+			};
+			break;
 	}
-end0:
 	return 0;
 }
+
 int manage::car_leave ( )
 {
-	int index = 0,lll=0;
+	int index = 0 , lll = 0;
 	string b;
 	display ( );
-	cout << "ÊÇ·ñÓĞ³µÁ¾ÒªÀë¿ª 1.ÊÇ 2.·ñ" << endl;
-	cin >> lll; cin.ignore ( );
+	cout << "æ˜¯å¦æœ‰è½¦è¾†è¦ç¦»å¼€ 1.æ˜¯ 2.å¦" << endl;
+	string t;
+	lll = choice_12 ( t );
+	cin.ignore ( );
 	if ( lll == 2 )
 	{
 		goto partend;
 	}
-	cout << "ÇëÊäÈëÔ¤±¸Àë¿ª³µµÄ³µÅÆºÅ:" << endl;
+	cout << "è¯·è¾“å…¥é¢„å¤‡ç¦»å¼€è½¦çš„è½¦ç‰Œå·:" << endl;
 restart:
 	{
 		getline ( cin , b );
@@ -232,22 +252,22 @@ restart:
 		{
 			if ( b == cars [ i ].get_num ( ) )
 			{
-				if ( cars [ i ].get_state()=="in" )
+				if ( cars [ i ].get_state ( ) == "in" )
 				{
-					cout << "ÒÔÏÂÎª¸Ã³µĞÅÏ¢" << endl;
+					cout << "ä»¥ä¸‹ä¸ºè¯¥è½¦ä¿¡æ¯" << endl;
 					cars [ i ].car_base ( );
 					index = i;
 				}
 				else
 				{
-					cout << "¸Ã³µÒÔÀë¿ª³µ¿â£¬ÇëÖØĞÂÊäÈë" << endl;
+					cout << "è¯¥è½¦ä»¥ç¦»å¼€è½¦åº“ï¼Œè¯·é‡æ–°è¾“å…¥" << endl;
 					goto restart;
 				}
 				break;
 			}
 			if ( i == capacity - 1 )
 			{
-				cout << "ÀúÊ·¼ÇÂ¼Îª¿Õ£¡" << endl;
+				cout << "è®°å½•ä¸ºç©º!" << endl;
 				goto partend;
 			}
 		}
@@ -256,23 +276,24 @@ restart:
 partend:
 	return 0;
 }
-void manage::price_c (int n,int a )
+
+void manage::price_c ( int n , int a )
 {
 	switch ( n )
 	{
 		case 1:
 			{
-				int oy , omo , od , oh , om , os , inde = a, day_c , l = leave,p;
-				cout << "ÇëÊäÈë¸Ã³µÀë¿ªÊ±¼ä" << endl;
-				cout << "Äê£º"; cin >> oy;
-				cout << "ÔÂ£º"; cin >> omo;
-				cout << "ÈÕ£º"; cin >> od;
-				cout << "Ê±£º"; cin >> oh;
-				cout << "·Ö£º"; cin >> om;
-				cout << "Ãë£º"; cin >> os;
+				int oy , omo , od , oh , om , os , inde = a , day_c , l = leave , p;
+				cout << "è¯·è¾“å…¥è¯¥è½¦ç¦»å¼€æ—¶é—´" << endl;
+				cout << "å¹´ï¼š"; cin >> oy;
+				cout << "æœˆï¼š"; cin >> omo;
+				cout << "æ—¥ï¼š"; cin >> od;
+				cout << "æ—¶ï¼š"; cin >> oh;
+				cout << "åˆ†ï¼š"; cin >> om;
+				cout << "ç§’ï¼š"; cin >> os;
 				cin.ignore ( );
 				cars [ leave ] = cars [ inde ];
-				cars [ inde ] = cars [ leave - 1 ];
+				cars [ inde ] = empty;
 				le = &cars [ leave ];
 				le->set_otime ( oy , omo , od , oh , om , os );
 				le->set_state ( );
@@ -287,32 +308,33 @@ void manage::price_c (int n,int a )
 			}
 		case 2:
 			{
-				int oy , omo , od , oh , om , os , inde = a,day_c,p;
-				cout << "ÇëÊäÈë¸Ã³µÀë¿ªÊ±¼ä" << endl;
-				cout << "Äê£º"; cin >> oy;
-				cout << "ÔÂ£º"; cin >> omo;
-				cout << "ÈÕ£º"; cin >> od;
-				cout << "Ê±£º"; cin >> oh;
-				cout << "·Ö£º"; cin >> om;
-				cout << "Ãë£º"; cin >> os;
+				int oy , omo , od , oh , om , os , inde = a , day_c , p;
+				cout << "è¯·è¾“å…¥è¯¥è½¦ç¦»å¼€æ—¶é—´" << endl;
+				cout << "å¹´ï¼š"; cin >> oy;
+				cout << "æœˆï¼š"; cin >> omo;
+				cout << "æ—¥ï¼š"; cin >> od;
+				cout << "æ—¶ï¼š"; cin >> oh;
+				cout << "åˆ†ï¼š"; cin >> om;
+				cout << "ç§’ï¼š"; cin >> os;
 				cin.ignore ( );
 				le = &cars [ a ];
 				le->set_otime ( oy , omo , od , oh , om , os );
 				day_c = d ( le );
 				p = price_base ( day_c , le );
 				le->set_price ( p );
+				le->car_history ( );
 				break;
 			}
 		case 3:
 			{
 				int iy , imo , id , ih , im , is , inde = a , day_c , p;
-				cout << "ÇëÊäÈë¸Ã³µÈë¿âÊ±¼ä" << endl;
-				cout << "Äê£º"; cin >> iy;
-				cout << "ÔÂ£º"; cin >> imo;
-				cout << "ÈÕ£º"; cin >> id;
-				cout << "Ê±£º"; cin >> ih;
-				cout << "·Ö£º"; cin >> im;
-				cout << "Ãë£º"; cin >> is;
+				cout << "è¯·è¾“å…¥è¯¥è½¦å…¥åº“æ—¶é—´" << endl;
+				cout << "å¹´ï¼š"; cin >> iy;
+				cout << "æœˆï¼š"; cin >> imo;
+				cout << "æ—¥ï¼š"; cin >> id;
+				cout << "æ—¶ï¼š"; cin >> ih;
+				cout << "åˆ†ï¼š"; cin >> im;
+				cout << "ç§’ï¼š"; cin >> is;
 				cin.ignore ( );
 				le = &cars [ a ];
 				le->set_itime ( iy , imo , id , ih , im , is );
@@ -325,6 +347,7 @@ void manage::price_c (int n,int a )
 			break;
 	}
 }
+
 void manage::sort ( )
 {
 	for ( int i = 0; i < ps + 1; i++ )
@@ -340,20 +363,24 @@ void manage::sort ( )
 		}
 	}
 }
+
 int manage::change ( )
 {
-	string a;//¶¨ÒåÒ»¸ö´¢´æ³µÅÆºÅµÄ±äÁ¿
-	int c;// ¿ÉÒÔÑ¡ÔñĞŞ¸Ä·½Ê½
-	int b = 0;//ÏÂ±ê
-	int i , t,kkk=0;
-	string d;//ĞŞ¸ÄºóµÄÊı¾İ
-	cout << "ÊÇ·ñ½øÈëĞŞ¸ÄÏµÍ³ 1.ÊÇ 2.·ñ" << endl;
-	cin >> kkk; cin.ignore ( );
+	string a;//è½¦ç‰Œå·
+	int c;// å¯ä»¥é€‰æ‹©ä¿®æ”¹æ–¹å¼
+	int b = 0;//ä¸‹æ ‡
+	int i , t , kkk = 0;
+	string d;//ä¿®æ”¹åçš„æ•°æ®
+	string t1 , t2;
+	cout << "æ˜¯å¦è¿›å…¥ä¿®æ”¹ç³»ç»Ÿ 1.æ˜¯ 2.å¦" << endl;
+	string tt;
+	kkk = choice_12 ( tt );
+	cin.ignore ( );
 	if ( kkk == 2 )
 	{
 		goto finish;
 	}
-	cout << "ÇëÊäÈëÄãÒªĞŞ¸Ä³µµÄ³µÅÆºÅ";
+	cout << "è¯·è¾“å…¥ä½ è¦ä¿®æ”¹è½¦çš„è½¦ç‰Œå·";
 	getline ( cin , a );
 	for ( i = 0; i < capacity; i++ )
 	{
@@ -369,97 +396,156 @@ int manage::change ( )
 		}
 		if ( i == capacity - 1 )
 		{
-			cout << "¼ÇÂ¼Îª¿Õ£¡" << endl;
+			cout << "è®°å½•ä¸ºç©ºï¼" << endl;
 		}
 	}
-	cout << "1.ĞŞ¸Ä³µÅÆºÅ  2.ĞŞ¸Ä³µµÄÑÕÉ« 3.ĞŞ¸Ä³µĞÍ  4.ĞŞ¸Ä½øÈëÊ±¼ä 5.ĞŞ¸Ä³ö¿âÊ±¼ä 6.ÍË³öĞŞ¸Ä½çÃæ" << endl;
-	cout << "ÇëÊäÈëÑ¡Ôñ:" << endl;
-	cin >> c;
+	cout << "1.ä¿®æ”¹è½¦ç‰Œå·" << endl;
+	cout << "2.ä¿®æ”¹è½¦çš„é¢œè‰²" << endl;
+	cout << "3.ä¿®æ”¹è½¦å‹" << endl;
+	cout << "4.ä¿®æ”¹è¿›å…¥æ—¶é—´" << endl;
+	cout << "5.ä¿®æ”¹å‡ºåº“æ—¶é—´" << endl;
+	cout << "6.é€€å‡ºä¿®æ”¹ç•Œé¢" << endl << endl;
+	cout << "è¯·è¾“å…¥é€‰æ‹©:" << endl;
+	c = choice_16 ( t2 );
 	cin.ignore ( );
 	switch ( c )
 	{
 		case 1:
-			cout << "½«³µÅÆºÅĞŞ¸ÄÎª£º" << endl;
+			cout << "å°†è½¦ç‰Œå·ä¿®æ”¹ä¸ºï¼š" << endl;
 			getline ( cin , d );
 			cars [ b ].set_car_num ( d );
 			if ( cars [ b ].get_num ( ) == d )
 			{
-				cout << "ĞŞ¸Ä³É¹¦£¡" << endl;
+				cout << "ä¿®æ”¹æˆåŠŸ,ä»¥ä¸‹æ˜¯ä¿®æ”¹åçš„ä¿¡æ¯ï¼š " << endl;
+				if ( cars [ b ].get_state ( ) == "leave" )
+				{
+					cars [ b ].car_history ( );
+				}
+				else cars [ b ].car_base ( );
 			}
 			break;
 		case 2:
-			cout << "½«³µµÄÑÕÉ«ĞŞ¸ÄÎª£º"<<endl;
+			cout << "å°†è½¦çš„é¢œè‰²ä¿®æ”¹ä¸ºï¼š" << endl;
 			getline ( cin , d );
 			cars [ b ].set_color ( d );
 			if ( cars [ b ].get_color ( ) == d )
 			{
-				cout << "ĞŞ¸Ä³É¹¦" << endl;
+				cout << "ä¿®æ”¹æˆåŠŸ,ä»¥ä¸‹æ˜¯ä¿®æ”¹åçš„ä¿¡æ¯ï¼š " << endl;
+				if ( cars [ b ].get_state ( ) == "leave" )
+				{
+					cars [ b ].car_history ( );
+				}
+				else cars [ b ].car_base ( );
 			}
 			break;
 		case 3:
-			cout << "½«³µĞÍ¸Ä³É£¨ºÅÂë£©£º1.Ğ¡Æû³µ 2.Ğ¡¿¨ 3.ÖĞ¿¨ 4.´ó¿¨"<<endl;
-			cin >> t;
+			cout << "å°†è½¦å‹æ”¹æˆï¼ˆå·ç ï¼‰ï¼š1.å°æ±½è½¦ 2.å°å¡ 3.ä¸­å¡ 4.å¤§å¡" << endl;
+			t = choice_14 ( t1 );
+			cin.ignore ( );
 			statistics_model_minus ( cars [ b ].get_type_unm ( ) );
 			statistics_model_plus ( t );
 			cars [ b ].set_type ( t );
 			if ( t == cars [ b ].get_type_unm ( ) )
 			{
-				cout << "ĞŞ¸Ä³É¹¦" << endl;
+				cout << "ä¿®æ”¹æˆåŠŸ,ä»¥ä¸‹æ˜¯ä¿®æ”¹åçš„ä¿¡æ¯ï¼š " << endl;
+				if ( cars [ b ].get_state ( ) == "leave" )
+				{
+					cars [ b ].car_history ( );
+				}
+				else cars [ b ].car_base ( );
 			}
 			break;
 		case 4:
 			price_c ( 3 , b );
-			cout << "ĞŞ¸Ä³É¹¦,ÒÔÏÂÊÇĞŞ¸ÄºóµÄĞÅÏ¢£º "<<endl;
-			cars [ b ].car_history ( );
+			cout << "ä¿®æ”¹æˆåŠŸ,ä»¥ä¸‹æ˜¯ä¿®æ”¹åçš„ä¿¡æ¯ï¼š " << endl;
+			if ( cars [ b ].get_state ( ) == "leave" )
+			{
+				cars [ b ].car_history ( );
+			}
+			else cars [ b ].car_base ( );
 			sort ( );
 			cout << endl;
 			break;
 		case 5:
-			price_c ( 2 , b );
-			cout << "ĞŞ¸Ä³É¹¦,ÒÔÏÂÊÇĞŞ¸ÄºóµÄĞÅÏ¢£º "<<endl;
-			cars [ b ].car_history ( );
+			if ( cars [ b ].get_state ( ) == "in" )
+			{
+				cout << "è¯¥è½¦æœªç¦»å¼€è½¦åº“ï¼Œæ˜¯å¦ä¿®æ”¹ 1.æ˜¯ 2.å¦" << endl;
+				goto che;
+			}
+			else
+			{
+				price_c ( 2 , b );
+				goto en;
+			}
+		che:
+			{
+				int le;
+				string t0;
+				le = choice_12 ( t0 );
+				cin.ignore ( );
+				if ( le == 1 )
+				{
+					price_c ( 1 , b );
+				}
+				else
+				{
+					if ( le == 2 )
+					{
+						goto finish;
+					}
+				}
+			}
+		en:
+			cout << "ä¿®æ”¹æˆåŠŸ,ä»¥ä¸Šæ˜¯ä¿®æ”¹åçš„ä¿¡æ¯ï¼š " << endl;
 			break;
 		case 6:
-			cout << "ÒÑÍË³öĞŞ¸ÄÏµÍ³";
+			cout << "å·²é€€å‡ºä¿®æ”¹ç³»ç»Ÿ";
 			break;
 	}
 finish:
 	return 0;
 }
-int manage::car_delete( )
+
+int manage::car_delete ( )
 {
 	string a;
-	int i , j = 0,ddd;
-	cout << "ÊÇ·ñ½øÈëÉ¾³ıÏµÍ³ 1.ÊÇ 2.·ñ" << endl;
-	cin >> ddd; cin.ignore ( );
-	if ( ddd == 2 )
-	{
-		goto endl_l;
-	}
+	int i , j = 0 , ddd;
 start:
 	{
-		cout << "ÇëÊäÈëÄãÒªÉ¾³ıµÄ³µÁ¾ĞÅÏ¢:  " << endl;
-		cout << "³µÅÆºÅ: ";
+		cout << "æ˜¯å¦è¿›å…¥åˆ é™¤ç³»ç»Ÿ 1.æ˜¯ 2.å¦" << endl;
+		string t;
+		ddd = choice_12 ( t );
+		cin.ignore ( );
+		if ( ddd == 2 )
+		{
+			goto endl_l;
+		}
+		cout << "è¯·è¾“å…¥ä½ è¦åˆ é™¤çš„è½¦è¾†ä¿¡æ¯:  " << endl;
+		cout << "è½¦ç‰Œå·: ";
 		getline ( cin , a );
-		if ( count == 0 ) cout << "¼ÇÂ¼Îª¿Õ!" << endl;
-		for ( i = 0; i < count; i++ )
+		if ( count == 0 ) cout << "è®°å½•ä¸ºç©º!" << endl;
+		for ( i = 0; i < capacity; i++ )
 		{
 			if ( a == cars [ i ].get_num ( ) )
 			{
-				cars [ i ].set_car_num ( " " );
 				statistics_model_minus ( cars [ i ].get_type_unm ( ) );
+				cars [ i ] = empty;
+				if ( i <= ps )
+				{
+					ps_s++;
+				}
 				count--;
 				j = i;
 			}
 		}
 		if ( cars [ j ].get_num ( ) == " " )
 		{
-			cout << "É¾³ı³É¹¦"<<endl;
-			ps_s--;
+			cout << "åˆ é™¤æˆåŠŸ" << endl;
+			sort ( );
 		}
 		else
 		{
-			cout << "É¾³ıÊ§°Ü£¬ÇëÖØĞÂ¿ªÊ¼";
+			cout << "åˆ é™¤å¤±è´¥ï¼Œè¯·é‡æ–°å¼€å§‹";
 			goto start;
 		}
 		sort ( );
@@ -467,6 +553,41 @@ start:
 endl_l:
 	return 0;
 }
+
+int manage::statistics_model ( int n )
+{
+	switch ( n )
+	{
+		case 1:
+			if ( car_s == 0 )
+			{
+				cout << "è¯¥è½¦å‹è®°å½•ä¸ºç©º" << endl;
+			}
+			break;
+		case 2:
+			if ( lorry_s == 0 )
+			{
+				cout << "è¯¥è½¦å‹è®°å½•ä¸ºç©º" << endl;
+			}
+			break;
+		case 3:
+			if ( lorry_m == 0 )
+			{
+				cout << "è¯¥è½¦å‹è®°å½•ä¸ºç©º" << endl;
+			}
+			break;
+		case 4:
+			if ( lorry_l == 0 )
+			{
+				cout << "è¯¥è½¦å‹è®°å½•ä¸ºç©º" << endl;
+			}
+			break;
+		default:
+			break;
+	}
+	return 0;
+}
+
 void manage::statistics_model_plus ( int n )
 {
 	switch ( n )
@@ -487,7 +608,8 @@ void manage::statistics_model_plus ( int n )
 			break;
 	}
 }
-void manage::statistics_model_minus(int n )
+
+void manage::statistics_model_minus ( int n )
 {
 	switch ( n )
 	{
@@ -507,26 +629,54 @@ void manage::statistics_model_minus(int n )
 			break;
 	}
 }
+
 void manage::print_statistic ( )
 {
 	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
 	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "Í£³µ³¡¹²ÓĞ"<<count<<"Ìõ¼ÇÂ¼" << endl;
+	cout << " " << "åœè½¦åœºå…±æœ‰" << count << "æ¡è®°å½•" << endl;
 	cout.fill ( ' ' ); cout.width ( 5 );
-	cout << " " << "ÆäÖĞ" << endl;
+	cout << " " << "å…¶ä¸­" << endl;
 	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "Ğ¡Æû³µÓĞ£º"<<car_s << endl;
+	cout << " " << "å°æ±½è½¦æœ‰ï¼š" << car_s << endl;
 	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "Ğ¡¿¨ÓĞ£º"<<lorry_s << endl;
+	cout << " " << "å°å¡æœ‰ï¼š" << lorry_s << endl;
 	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "ÖĞ¿¨ÓĞ£º"<<lorry_m << endl;
+	cout << " " << "ä¸­å¡æœ‰ï¼š" << lorry_m << endl;
 	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "´ó¿¨ÓĞ£º"<<lorry_l << endl;
+	cout << " " << "å¤§å¡æœ‰ï¼š" << lorry_l << endl;
 	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
+}
+
+void manage::info ( car* info )
+{
+	string a , b;//è½¦è¾†ä¿¡æ¯ï¼Œaâ€”â€”è½¦ç‰Œï¼Œbâ€”â€”é¢œè‰²
+	string c;//è½¦å‹
+	string l;
+	string iy , imo , id , ih , im , is;//è¿›å…¥è½¦åº“æ—¶é—´
+	ifstream fin;
+	fin.open ( "car_info.txt" );
+	for ( int i = 0; i < N; i++ )
+	{
+		getline ( fin , a );
+		getline ( fin , b );
+		getline ( fin , c );
+		getline ( fin , iy ); getline ( fin , imo ); getline ( fin , id ); getline ( fin , ih ); getline ( fin , im ); getline ( fin , is );
+		info->set_car_num ( a );
+		info->set_color ( b );
+		info->set_type ( stoi ( c , 0 , 10 ) );
+		info->set_itime ( stoi ( iy , 0 , 10 ) , stoi ( imo , 0 , 10 ) , stoi ( id , 0 , 10 ) , stoi ( ih , 0 , 10 ) , stoi ( im , 0 , 10 ) , stoi ( is , 0 , 10 ) );
+		statistics_model_plus ( stoi ( c , 0 , 10 ) );
+		info++;
+		count++;
+		ps_s--;
+	}
+	sort ( );
+	fin.close ( );
 }
 //==================================================//
 //            Copyright@ Han 2020                   //
 //            Author:    Han                        //
 //            Email:     syhan1228@vip.qq.com       //
-//            Time:      2020-05-20 12:11:04        //
+//            Time:      2020-06-02 21:01:58        //
 //==================================================//

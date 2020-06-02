@@ -1,30 +1,31 @@
-#pragma once
+ï»¿#pragma once
 #include<iostream>
 #include<math.h>
 #include"Car.h"
 using namespace std;
-int lapeyear ( int year2 )//ÈòÄêÅĞ¶Ïº¯Êı
+int lapeyear ( int year2 )//é—°å¹´åˆ¤æ–­å‡½æ•°
 {
 	if ( ( year2 % 400 == 0 ) || ( year2 % 4 == 0 && year2 % 100 != 0 ) )
 	{
 		return 1;
 	}
-	else 
+	else
 	{
-		return 0; 
+		return 0;
 	}
 }
-int years1 ( int year1 , int year2 )//¼ÆËãÁ½Äê¼äµÄÌìÊı
+
+int years1 ( int year1 , int year2 )//è®¡ç®—ä¸¤å¹´é—´çš„å¤©æ•°
 {
 	int d = 0 , i , r = 0 , z = 0;
 	if ( year1 < year2 )
 	{
 		for ( i = year1 + 1; i < year2; i++ )
 		{
-			if ( lapeyear ( i ) ) 
+			if ( lapeyear ( i ) )
 			{
-				r++; 
-			}//Á½ÄêÖ®¼äÓĞ¶àÉÙ¸öÈòÔÂ
+				r++;
+			}//ä¸¤å¹´ä¹‹é—´æœ‰å¤šå°‘ä¸ªé—°æœˆ
 		}
 		d = ( year2 - year1 - 1 ) * 365 + r;
 	}
@@ -35,19 +36,20 @@ int years1 ( int year1 , int year2 )//¼ÆËãÁ½Äê¼äµÄÌìÊı
 			if ( lapeyear ( i ) )
 			{
 				r++;
-			}//Á½ÄêÖ®¼äÓĞ¶àÉÙ¸öÈòÔÂ
+			}//ä¸¤å¹´ä¹‹é—´æœ‰å¤šå°‘ä¸ªé—°æœˆ
 		}
 		d = ( year1 - year2 - 1 ) * 365 + r;
 	}
 	return d;
 }
-int months2 ( int year , int month , int date )//¼ÆËãµ½Äê³õÈÕ²îµÄº¯Êı
+
+int months2 ( int year , int month , int date )//è®¡ç®—åˆ°å¹´åˆæ—¥å·®çš„å‡½æ•°
 {
 	int i , d = 0;
 	int years [ 12 ] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
-	if ( lapeyear ( year ) ) 
+	if ( lapeyear ( year ) )
 	{
-		years [ 1 ] = 29; 
+		years [ 1 ] = 29;
 	}
 	for ( i = 0; i < month - 1; i++ )
 	{
@@ -56,7 +58,8 @@ int months2 ( int year , int month , int date )//¼ÆËãµ½Äê³õÈÕ²îµÄº¯Êı
 	d += date;
 	return d;
 }
-int months1 ( int year , int month , int date )//¼ÆËãµ½Äêµ×ÈÕ²îµÄº¯Êı
+
+int months1 ( int year , int month , int date )//è®¡ç®—åˆ°å¹´åº•æ—¥å·®çš„å‡½æ•°
 {
 	int i , d = 0;
 	int years [ 12 ] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
@@ -71,11 +74,12 @@ int months1 ( int year , int month , int date )//¼ÆËãµ½Äêµ×ÈÕ²îµÄº¯Êı
 	d = d + years [ month - 1 ] - date;
 	return d;
 }
-int d ( car *l )
+
+int d ( car* l )
 {
 	int year1 , year2 , month1 , month2 , date1 , date2;
 	int d = 0 , i , m = 0;
-	int x1 , x2;//¼ÇÂ¼Á½¸öÈÕÆÚ·Ö±ğµ½Äê³õºÍÄêµ×µÄÌìÊı
+	int x1 , x2;//è®°å½•ä¸¤ä¸ªæ—¥æœŸåˆ†åˆ«åˆ°å¹´åˆå’Œå¹´åº•çš„å¤©æ•°
 	int years [ 12 ] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
 	year1 = l->itime.get_year ( );
 	year2 = l->otime.get_year ( );
@@ -83,7 +87,7 @@ int d ( car *l )
 	month2 = l->otime.get_month ( );
 	date1 = l->itime.get_day ( );
 	date2 = l->otime.get_day ( );
-	if ( year1 == year2 )//´óÇ°Ìá£¬Í¬ÄêÊ±
+	if ( year1 == year2 )//å¤§å‰æï¼ŒåŒå¹´æ—¶
 	{
 		if ( lapeyear ( year1 ) )
 		{
@@ -92,10 +96,10 @@ int d ( car *l )
 		if ( month1 == month2 )
 		{
 			d = date1 > date2 ? date1 - date2 : d = date2 - date1;
-		}//Í¬ÄêÍ¬ÔÂ
-		if ( month1 != month2 )//Í¬Äê²»Í¬ÔÂ
+		}//åŒå¹´åŒæœˆ
+		if ( month1 != month2 )//åŒå¹´ä¸åŒæœˆ
 		{
-			//¼ÆËã·½·¨ÎªÇó³öÁ½ÔÂÖ®Ç°µÄÌìÊı£¬È»ºóÇóÇ°Ò»¸öÔÂÊ£ÓàµÄÌìÊıºÍºóÒ»¸öÔÂÒÑ¾­¿ªÊ¼µÄÌìÊı
+			//è®¡ç®—æ–¹æ³•ä¸ºæ±‚å‡ºä¸¤æœˆä¹‹å‰çš„å¤©æ•°ï¼Œç„¶åæ±‚å‰ä¸€ä¸ªæœˆå‰©ä½™çš„å¤©æ•°å’Œåä¸€ä¸ªæœˆå·²ç»å¼€å§‹çš„å¤©æ•°
 			if ( month1 < month2 )
 			{
 				{
@@ -118,11 +122,11 @@ int d ( car *l )
 			}
 		}
 	}
-	else//Çó²»Í¬ÄêµÄÈÎÒâÈÕÆÚµÄÌìÊı²î
+	else//æ±‚ä¸åŒå¹´çš„ä»»æ„æ—¥æœŸçš„å¤©æ•°å·®
 	{
 		if ( year1 > year2 )
 		{
-			x1 = months1 ( year2 , month2 , date2 );//x1Îªµ½Äêµ×µÄÈÕ²î£¬x2Îªµ½Äê³õµÄÈÕ²î
+			x1 = months1 ( year2 , month2 , date2 );//x1ä¸ºåˆ°å¹´åº•çš„æ—¥å·®ï¼Œx2ä¸ºåˆ°å¹´åˆçš„æ—¥å·®
 			x2 = months2 ( year1 , month1 , date1 );
 			d = years1 ( year2 , year1 );
 			d += x1 + x2;
@@ -137,11 +141,12 @@ int d ( car *l )
 	}
 	return d;
 }
-int price_base ( int day,car *d )
+
+int price_base ( int day , car* d )
 {
 	double all_s;
 	int i;
-	int h,h1 , m , m1 , s , s1;
+	int h , h1 , m , m1 , s , s1;
 	h = d->itime.get_hour ( );
 	h1 = d->otime.get_hour ( );
 	m = d->itime.get_minute ( );
@@ -158,7 +163,7 @@ int price_base ( int day,car *d )
 		else
 		{
 			day--;
-			all_s = day * 86400 + 86400 - (( h - h1 ) * 3600 + ( m1 - m ) * 60 + ( s1 - s ));
+			all_s = day * 86400 + 86400 - ( ( h - h1 ) * 3600 + ( m1 - m ) * 60 + ( s1 - s ) );
 			i = ceil ( all_s / 3600 );
 		}
 	}
@@ -176,9 +181,85 @@ int price_base ( int day,car *d )
 	}
 	return i;
 }
+
+int choice_12 ( string t )
+{
+	int x;
+test12:
+	{
+		cin >> t;
+		if ( t != "1" && t != "2" )
+		{
+			cout << "è¿æ³•è¾“å…¥ è¯·é‡æ–°è¾“å…¥" << endl;
+			goto test12;
+		}
+		else
+		{
+			x = stoi ( t , 0 , 10 );
+			return x;
+		}
+	}
+}
+
+int choice_14 ( string t )
+{
+	int x;
+test14:
+	{
+		cin >> t;
+		if ( t != "1" && t != "2" && t != "3" && t != "4" )
+		{
+			cout << "è¿æ³•è¾“å…¥ è¯·é‡æ–°è¾“å…¥" << endl;
+			goto test14;
+		}
+		else
+		{
+			x = stoi ( t , 0 , 10 );
+			return x;
+		}
+	}
+}
+
+int choice_16 ( string t )
+{
+	int x;
+test16:
+	{
+		cin >> t;
+		if ( t != "1" && t != "2" && t != "3" && t != "4" && t != "5" && t != "6" )
+		{
+			cout << "è¿æ³•è¾“å…¥ è¯·é‡æ–°è¾“å…¥" << endl;
+			goto test16;
+		}
+		else
+		{
+			x = stoi ( t , 0 , 10 );
+			return x;
+		}
+	}
+}
+
+int choice_19 ( string t )
+{
+	int x;
+test19:
+	{
+		cin >> t;
+		if ( t != "1" && t != "2" && t != "3" && t != "4" && t != "5" && t != "6" && t != "7" && t != "8" && t != "9" )
+		{
+			cout << "è¿æ³•è¾“å…¥ è¯·é‡æ–°è¾“å…¥" << endl;
+			goto test19;
+		}
+		else
+		{
+			x = stoi ( t , 0 , 10 );
+			return x;
+		}
+	}
+}
 //==================================================//
 //            Copyright@ Han 2020                   //
 //            Author:    Han                        //
 //            Email:     syhan1228@vip.qq.com       //
-//            Time:      2020-05-19 22:19:26        //
+//            Time:      2020-06-02 19:03:20        //
 //==================================================//

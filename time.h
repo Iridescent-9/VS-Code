@@ -1,5 +1,6 @@
-#pragma once
+ï»¿#pragma once
 #include<iostream>
+#include<math.h>
 using namespace std;
 class Time
 {
@@ -15,7 +16,7 @@ public:
 	int get_minute ( );
 	int get_second ( );
 	void print_time ( );
-	long long int get_time();
+	long long int get_time ( );
 };
 Time::Time ( )
 {
@@ -26,6 +27,7 @@ Time::Time ( )
 	minute = 0;
 	second = 0;
 }
+
 void Time::set_time ( int y , int mo , int d , int h , int min , int s )
 {
 	year = y;
@@ -35,38 +37,46 @@ void Time::set_time ( int y , int mo , int d , int h , int min , int s )
 	minute = min;
 	second = s;
 }
+
 int Time::get_year ( )
 {
 	return year;
 }
+
 int Time::get_month ( )
 {
 	return month;
 }
+
 int Time::get_day ( )
 {
 	return day;
 }
+
 int Time::get_hour ( )
 {
 	return hour;
 }
+
 int Time::get_minute ( )
 {
 	return minute;
 }
+
 int Time::get_second ( )
 {
 	return second;
 }
+
 void Time::print_time ( void )
 {
-	cout << year << "Äê" << month << "ÔÂ" << day << "ÈÕ  " << hour << ':' << minute << ':' << second;
+	cout << year << "å¹´" << month << "æœˆ" << day << "æ—¥  " << hour << ':' << minute << ':' << second;
 }
-long long int Time::get_time( )
+
+long long int Time::get_time ( )
 {
 	long long int a;
-	a = year * pow(10, 10) + month * pow(10, 8) + day * pow(10, 6) + hour * pow(10, 4) + minute * pow(10, 2) + second;
+	a = year * pow ( 10 , 10 ) + month * pow ( 10 , 8 ) + day * pow ( 10 , 6 ) + hour * pow ( 10 , 4 ) + minute * pow ( 10 , 2 ) + second;
 	return a;
 }
 //==================================================//

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include<iostream>
 #include<string.h>
 #include<string>
@@ -7,32 +7,32 @@ using namespace std;
 class car :public Time
 {
 private:
-	string car_num;//³µÅÆºÅ a
-	string color;//ÑÕÉ« b
-	string type;//³µµÄĞÍºÅ c
-	string state = "in";
-	int price;//Í£³µ·Ñ
-	int type_num;//³µĞÍ£¬Êı×ÖĞÍµÄ
+	string car_num;//è½¦ç‰Œå· a
+	string color;//é¢œè‰² b
+	string type;//è½¦çš„å‹å· c
+	string state = "in";//è½¦è¾†çŠ¶æ€
+	int price , price_time;//åœè½¦è´¹ï¼Œåœè½¦æ—¶é—´
+	int type_num;//è½¦å‹ï¼Œæ•°å­—å‹çš„
 public:
-	Time  itime;//µ½´ïÊ±¼ä
-	Time  otime;//Àë¿ªÊ±¼ä
+	Time  itime;//åˆ°è¾¾æ—¶é—´
+	Time  otime;//ç¦»å¼€æ—¶é—´
 	car ( );
-	void car_base ( );//Êä³ö³µÁ¾µÄĞÅÏ¢,³µÔÚÍ£³µÎ»Ê±Ê¹ÓÃ
-	void car_history ( );//³µÁ¾ÀúÊ·¼ÇÂ¼
-	void set_itime ( int iy , int imo , int id , int ih , int imin , int is );//ÉèÖÃµ½´ïÊ±¼ä
-	void set_otime ( int oy , int omo , int od , int oh , int omin , int os );//ÉèÖÃÀë¿ªÊ±¼ä
-	void itime_print ( );//Êä³öµ½´ïÊ±¼ä
-	void otime_print ( );//Êä³öÀë¿ªÊ±¼ä
-	void set_car_num ( string a );//ÉèÖÃ³µÅÆºÅ
-	void set_color ( string b );//ÉèÖÃ³µµÄÑÕÉ«
-	void set_type ( int n );//ÉèÖÃ³µµÄ³µĞÍ
-	void set_state ( );
-	void set_price ( int x );
-	int get_type_unm ( );//µÃµ½³µĞÍÊı×ÖĞÍµÄ
-	string get_num ( );//µÃµ½³µÅÆºÅ
-	string get_color ( );//µÃµ½³µÑÕÉ«
-	string get_type ( );//µÃµ½³µĞÍºÅ
-	string get_state ( );//µÃµ½³µµÄ×´Ì¬£¬Àë¿ª»òÊÇÔÚÎ»
+	void car_base ( );//è¾“å‡ºè½¦è¾†çš„ä¿¡æ¯,è½¦åœ¨åœè½¦ä½æ—¶ä½¿ç”¨
+	void car_history ( );//è½¦è¾†å†å²è®°å½•
+	void set_itime ( int iy , int imo , int id , int ih , int imin , int is );//è®¾ç½®åˆ°è¾¾æ—¶é—´
+	void set_otime ( int oy , int omo , int od , int oh , int omin , int os );//è®¾ç½®ç¦»å¼€æ—¶é—´
+	void itime_print ( );//è¾“å‡ºåˆ°è¾¾æ—¶é—´
+	void otime_print ( );//è¾“å‡ºç¦»å¼€æ—¶é—´
+	void set_car_num ( string a );//è®¾ç½®è½¦ç‰Œå·
+	void set_color ( string b );//è®¾ç½®è½¦çš„é¢œè‰²
+	void set_type ( int n );//è®¾ç½®è½¦çš„è½¦å‹
+	void set_state ( );//è®¾ç½®è½¦è¾†çŠ¶æ€
+	void set_price ( int x );//è®¡ç®—åœè½¦è´¹ç”¨
+	int get_type_unm ( );//å¾—åˆ°è½¦å‹æ•°å­—å‹çš„
+	string get_num ( );//å¾—åˆ°è½¦ç‰Œå·
+	string get_color ( );//å¾—åˆ°è½¦é¢œè‰²
+	string get_type ( );//å¾—åˆ°è½¦å‹å·
+	string get_state ( );//å¾—åˆ°è½¦çš„çŠ¶æ€ï¼Œç¦»å¼€æˆ–æ˜¯åœ¨ä½
 };
 car::car ( )
 {
@@ -41,117 +41,142 @@ car::car ( )
 	type = ' ';
 	itime.set_time ( 99999 , 12 , 31 , 23 , 59 , 59 );
 }
+
 void car::car_base ( )
 {
 	if ( get_num ( ) == " " )
 	{
 		cout.fill ( '-' ); cout.width ( 80 ); cout << "-" << endl << endl << endl;
 		cout.fill ( ' ' ); cout.width ( 35 ); cout << " ";
-		cout << "¿Õ³µÎ»" << endl << endl << endl;
+		cout << "ç©ºè½¦ä½" << endl << endl << endl;
 		cout.fill ( '-' ); cout.width ( 80 ); cout << "-" << endl;
 	}
 	else
 	{
 		cout.fill ( '-' ); cout.width ( 80 ); cout << "-" << endl;
-		cout << " " << "³µÁ¾ĞÅÏ¢:" << endl;
+		cout << " " << "è½¦è¾†ä¿¡æ¯:" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "³µÅÆºÅ:" << car_num << endl;
+		cout << " " << "è½¦ç‰Œå·:" << car_num << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "³µµÄÑÕÉ«:" << color << endl;
+		cout << " " << "é¢œè‰²:" << color << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "³µĞÍ:" << type << endl;
+		cout << " " << "è½¦å‹:" << type << endl;
 		cout.fill ( ' ' ); cout.width ( 10 ); cout << " ";
 		itime_print ( ); cout << endl;
 		cout.fill ( '-' ); cout.width ( 80 ); cout << "-" << endl;
 	}
 }
+
 void car::car_history ( )
 {
 	cout.fill ( '-' ); cout.width ( 80 ); cout << "-" << endl;
-	cout << " " << "³µÁ¾ĞÅÏ¢:" << endl;
+	cout << " " << "è½¦è¾†ä¿¡æ¯:" << endl;
 	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "³µÅÆºÅ:" << car_num << endl;
+	cout << " " << "è½¦ç‰Œå·:" << car_num << endl;
 	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "³µµÄÑÕÉ«:" << color << endl;
+	cout << " " << "é¢œè‰²:" << color << endl;
 	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "³µĞÍ:" << type << endl;
+	cout << " " << "è½¦å‹:" << type << endl;
 	cout.fill ( ' ' ); cout.width ( 10 ); cout << " ";
 	itime_print ( ); cout << "  "; otime_print ( ); cout << endl;
-	cout.fill ( ' ' ); cout.width ( 10 ); cout << " ";
-	cout << "Í£³µ·ÑÓÃ£º" << price << "Ôª" << endl;
+	if ( price == 0 )
+	{
+		cout.fill ( ' ' ); cout.width ( 10 ); cout << " ";
+		cout << "åœè½¦ä¸åˆ°åŠå°æ—¶ åœè½¦è´¹ç”¨ï¼š" << price << "å…ƒ" << endl;
+	}
+	else
+	{
+		cout.fill ( ' ' ); cout.width ( 10 ); cout << " ";
+		cout << "åœè½¦æ—¶é•¿ï¼š" << price_time << "å°æ—¶ åœè½¦è´¹ç”¨ï¼š" << price << "å…ƒ" << endl;
+	}
 	cout.fill ( '-' ); cout.width ( 80 ); cout << "-" << endl;
 }
+
 void car::set_itime ( int iy , int imo , int id , int ih , int imin , int is )
 {
 	itime.set_time ( iy , imo , id , ih , imin , is );
 }
+
 void car::set_otime ( int oy , int omo , int od , int oh , int omin , int os )
 {
 	otime.set_time ( oy , omo , od , oh , omin , os );
 }
+
 void car::itime_print ( )
 {
 	itime.print_time ( );
-	cout << "½øÈëÍ£³µ³¡";
+	cout << "è¿›å…¥åœè½¦åœº";
 }
+
 void car::otime_print ( )
 {
 	otime.print_time ( );
-	cout << "Àë¿ªÍ£³µ³¡";
+	cout << "ç¦»å¼€åœè½¦åœº";
 }
+
 void car::set_car_num ( string a )
 {
 	car_num = a;
 }
+
 void car::set_color ( string b )
 {
 	color = b;
 }
+
 void car::set_type ( int n )
 {
 	switch ( n )
 	{
 		case 1:
-			type = "Ğ¡Æû³µ";
+			type = "å°æ±½è½¦";
 			break;
 		case 2:
-			type = "Ğ¡¿¨";
+			type = "å°å¡";
 			break;
 		case 3:
-			type = "ÖĞ¿¨";
+			type = "ä¸­å¡";
 			break;
 		case 4:
-			type = "´ó¿¨";
+			type = "å¤§å¡";
 			break;
 		default:
 			break;
 	}
 	type_num = n;
 }
+
 string car::get_num ( )
 {
 	return car_num;
 }
+
 string car::get_color ( )
 {
 	return color;
 }
+
 string car::get_type ( )
 {
 	return type;
 }
+
 void car::set_state ( )
 {
 	state = "leave";
 }
+
 string car::get_state ( )
 {
 	return state;
 }
+
 void car::set_price ( int x )
 {
-	price = x * 5;
+	price = x * 3;
+	price_time = x;
 }
+
 int car::get_type_unm ( )
 {
 	return type_num;
@@ -160,5 +185,5 @@ int car::get_type_unm ( )
 //            Copyright@ Han 2020                   //
 //            Author:    Han                        //
 //            Email:     syhan1228@vip.qq.com       //
-//            Time:      2020-05-20 12:11:11        //
+//            Time:      2020-05-30 00:29:57        //
 //==================================================//
