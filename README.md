@@ -3,5 +3,5 @@
 Windows文件夹下放在Windows环境下的可执行代码  
 Linux文件夹下放在Linux环境下的可执行代码  
   
-.vscode文件夹下的tasks.json文件，Line 9，cpp为 g++，c为gcc  
-.vscode文件夹下的lunch.json文件，注意Line 27
+.vscode文件夹下的tasks.json文件，注意gcc和g++    
+.vscode文件夹下的lunch.json文件，注意GDB路径
