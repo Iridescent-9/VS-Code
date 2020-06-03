@@ -655,7 +655,11 @@ void manage::info ( car* info )
 	string l;
 	string iy , imo , id , ih , im , is;//进入车库时间
 	ifstream fin;
-	fin.open ( "car_info.txt" );
+	fin.open ( "D:/VSCode/work/Windows/Freshman_course_design/Second_Semester/car_info.txt" );//此处为绝对路径，克隆到本地后需注意
+	if(!fin)
+	{
+		cout<<"文件打开失败"<<endl;
+	}
 	for ( int i = 0; i < N; i++ )
 	{
 		getline ( fin , a );

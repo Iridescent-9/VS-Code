@@ -39,7 +39,8 @@
                 "echo": true,
                 "reveal": "always",
                 "focus": false,
-                "panel": "shared" // 控制面板是否在任务中共享面板，shared=共享，new=新面板
+                "panel": "shared", // 控制面板是否在任务中共享面板，shared=共享，new=新面板
+                "showReuseMessage":false
             }
         }
     ]

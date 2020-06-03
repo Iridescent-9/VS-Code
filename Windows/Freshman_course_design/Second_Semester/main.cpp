@@ -1,4 +1,5 @@
-﻿#include<iostream>
+﻿//克隆至本地后请先修改manage.h中void manage::info ( car* info )函数打开文件的路径
+#include<iostream>
 #include<string.h>
 #include<string>
 #include<Windows.h>
@@ -9,8 +10,8 @@ void start ( );
 void copyright ( );
 int main ( )
 {
-	//start ( );
-	//copyright ( );
+	start ( );
+	copyright ( );
 	menu ( );
 	system ( "CLS" );
 	system ( "color 05" );
@@ -48,7 +49,6 @@ int menu ( )
 		int n = 0;
 		string c;
 		n = choice_19 ( c );
-		cin.ignore ( );
 		switch ( n )
 		{
 			case 1:
