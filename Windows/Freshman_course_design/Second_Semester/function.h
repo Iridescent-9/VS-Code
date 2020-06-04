@@ -257,6 +257,59 @@ test19:
 		}
 	}
 }
+
+void start ( )
+{
+	cout << endl << endl << endl << endl << endl << endl;
+	system ( " color 02" );
+	int all_block_num = 100;
+	for ( int i = 0; i < all_block_num; i++ )
+	{
+		if ( i < all_block_num - 1 )
+		{
+			printf ( "\r读取中[%.3lf%%]:" , i * 100.0 / ( all_block_num - 1 ) );
+		}
+		else
+		{
+			printf ( "\r读取完成[%.3lf%%]:" , i * 100.0 / ( all_block_num - 1 ) );
+		}
+		int show_num = i * 10 / all_block_num;
+		for ( int j = 1; j <= show_num; j++ )
+		{
+			cout << "█";
+			Sleep ( 10 );
+		}
+	}
+	system ( "CLS" );
+	system ( "color 07" );
+}
+
+void copyright ( )
+{
+	cout << endl << endl << endl;
+	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
+	cout << endl << endl << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "欢迎使用停车场管理系统" << endl << endl << endl;
+	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
+	Sleep ( 3000 );
+	system ( "CLS" );
+	cout << endl << endl << endl;
+	system ( "color 05" );
+	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
+	cout << endl << endl << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "Copyright@ HSY PFS 2020" << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "Author HSY PFS" << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "Time 2020-5" << endl << endl << endl;
+	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
+	Sleep ( 3000 );
+	system ( "CLS" );
+	system ( "color 07" );
+}
+
 //==================================================//
 //            Copyright@ Han 2020                   //
 //            Author:    Han                        //
