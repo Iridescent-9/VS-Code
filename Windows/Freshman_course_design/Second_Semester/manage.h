@@ -1,8 +1,10 @@
 ﻿#pragma once
 #include<iostream>
 #include<string.h>
+#include<string>
 #include<Windows.h>
 #include<fstream>
+#include<cstring>
 #include"Car.h"
 #include"function.h"
 #define N 10
@@ -17,7 +19,7 @@ class manage :public car
 	int car_s = 0 , lorry_s = 0 , lorry_m = 0 , lorry_l = 0;//小汽车，小卡，中卡，大卡
 public:
 	manage ( );
-	~manage ( ) { }
+	~manage ( );
 	int Add ( );//入库
 	int search ( );//查找
 	int change ( );//修改
@@ -25,17 +27,25 @@ public:
 	int car_delete ( );//删除
 	int statistics_model ( int n );//统计车型，修改函数调用
 	void sort ( );//按照到达时间的排序
-	void display ( );//显示在车位车辆全部信息
+	void display ( int n );//显示车辆信息
 	void price_c ( int n , int a );//计算金额
 	void statistics_model_plus ( int n );//统计车型,增加
 	void statistics_model_minus ( int n );//统计车型，减少
 	void print_statistic ( );//输出统计信息
-	void info ( car* info );//读取车辆信息
+	void info_read ( car* info );//读取车辆信息
+	void info_write ( car* info );//写车辆信息
 };
 
 manage::manage ( )
 {
-	info ( cars );
+	info_read ( cars );
+}
+
+manage::~manage ( )
+{
+	system ( "CLS" );
+	info_write ( cars );
+	Sleep ( 2000 );
 }
 
 int manage::Add ( )
@@ -136,17 +146,49 @@ part1:
 		}
 	}
 part2:
+	info_write ( cars );
 	return 0;
 }
 
-void manage::display ( )
+void manage::display ( int n )
 {
-	cout << "以下为车库车辆信息" << endl;
-	for ( int i = 0; i < ps; i++ )
+	switch ( n )
 	{
-		cars [ i ].car_base ( );
+		case 1:
+			cout << "以下为车库车辆信息" << endl;
+			for ( int i = 0; i < ps; i++ )
+			{
+				cars [ i ].car_base ( );
+			}
+			cout << endl;
+			break;
+		case 2:
+			for ( int i = 499; i > ps; i-- )
+			{
+				if ( cars [ i ].get_num ( ) != " " )goto s;
+				else
+				{
+					if ( i == ps + 1 )
+					{
+						cout << "没有车辆离开" << endl;
+						goto ed;
+					}
+				}
+			}
+		s:
+			cout << "以下为已离开车辆信息" << endl;
+			for ( int i = 499; i > ps; i-- )
+			{
+				if ( cars [ i ].get_num ( ) != " " )
+				{
+					cars [ i ].car_history ( );
+				}
+			}
+		ed:
+			break;
+		default:
+			break;
 	}
-	cout << endl;
 }
 
 int manage::search ( )
@@ -179,13 +221,10 @@ int manage::search ( )
 						}
 						else
 						{
-							for ( int j = count; j < capacity; j++ )
+							if ( cars [ i ].get_state ( ) == "leave" )
 							{
-								if ( cars [ j ].get_state ( ) == "leave" )
-								{
-									cars [ j ].car_history ( );
-									goto e;
-								}
+								cars [ i ].car_history ( );
+								goto e;
 							}
 						}
 					}
@@ -235,7 +274,7 @@ int manage::car_leave ( )
 {
 	int index = 0 , lll = 0;
 	string b;
-	display ( );
+	display ( 1 );
 	cout << "是否有车辆要离开 1.是 2.否" << endl;
 	string t;
 	lll = choice_12 ( t );
@@ -274,6 +313,7 @@ restart:
 	}
 	price_c ( 1 , index );
 partend:
+	info_write ( cars );
 	return 0;
 }
 
@@ -503,6 +543,7 @@ int manage::change ( )
 			break;
 	}
 finish:
+	info_write ( cars );
 	return 0;
 }
 
@@ -551,6 +592,7 @@ start:
 		sort ( );
 	}
 endl_l:
+	info_write ( cars );
 	return 0;
 }
 
@@ -648,19 +690,27 @@ void manage::print_statistic ( )
 	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
 }
 
-void manage::info ( car* info )
+void manage::info_read ( car* info )
 {
+	car* info1 = info;
 	string a , b;//车辆信息，a——车牌，b——颜色
 	string c;//车型
 	string l;
 	string iy , imo , id , ih , im , is;//进入车库时间
-	ifstream fin;
-	fin.open ( "D:/VSCode/work/Windows/Freshman_course_design/Second_Semester/car_info.txt" );//此处为绝对路径，克隆到本地后需注意
+	string oy , omo , od , oh , om , os , t_p;
+	string str , str1;
+	int j;
+	ifstream fin("D:/VSCode/work/Windows/Freshman_course_design/Second_Semester/car_info.txt");//此处为绝对路径，克隆到本地后需注意//此处为绝对路径，克隆到本地后需注意
 	if(!fin)
 	{
 		cout<<"文件打开失败"<<endl;
 	}
-	for ( int i = 0; i < N; i++ )
+	getline ( fin , str );
+	getline ( fin , str );
+	getline ( fin , str1 );
+	j = stoi ( str , 0 , 10 );
+	count = stoi ( str1 , 0 , 10 );
+	for ( int i = 0; i < j; i++ )
 	{
 		getline ( fin , a );
 		getline ( fin , b );
@@ -672,11 +722,82 @@ void manage::info ( car* info )
 		info->set_itime ( stoi ( iy , 0 , 10 ) , stoi ( imo , 0 , 10 ) , stoi ( id , 0 , 10 ) , stoi ( ih , 0 , 10 ) , stoi ( im , 0 , 10 ) , stoi ( is , 0 , 10 ) );
 		statistics_model_plus ( stoi ( c , 0 , 10 ) );
 		info++;
-		count++;
 		ps_s--;
 	}
 	sort ( );
+	if ( count > j )
+	{
+		info1 += 499;
+		for ( int i = 0; i < ( count - j ); i++ )
+		{
+			getline ( fin , a );
+			getline ( fin , b );
+			getline ( fin , c );
+			getline ( fin , iy ); getline ( fin , imo ); getline ( fin , id ); getline ( fin , ih ); getline ( fin , im ); getline ( fin , is );
+			getline ( fin , oy ); getline ( fin , omo ); getline ( fin , od ); getline ( fin , oh ); getline ( fin , om ); getline ( fin , os );
+			getline ( fin , t_p );
+			info1->set_car_num ( a );
+			info1->set_color ( b );
+			info1->set_type ( stoi ( c , 0 , 10 ) );
+			info1->set_itime ( stoi ( iy , 0 , 10 ) , stoi ( imo , 0 , 10 ) , stoi ( id , 0 , 10 ) , stoi ( ih , 0 , 10 ) , stoi ( im , 0 , 10 ) , stoi ( is , 0 , 10 ) );
+			info1->set_otime ( stoi ( oy , 0 , 10 ) , stoi ( omo , 0 , 10 ) , stoi ( od , 0 , 10 ) , stoi ( oh , 0 , 10 ) , stoi ( om , 0 , 10 ) , stoi ( os , 0 , 10 ) );
+			info1->set_price ( stoi ( t_p , 0 , 10 ) );
+			info1->set_state ( );
+			statistics_model_plus ( stoi ( c , 0 , 10 ) );
+			info1--;
+			leave--;
+		}
+	}
 	fin.close ( );
+}
+
+void manage::info_write ( car* info )
+{
+	car* info1 = info;
+	fstream fout ( "D:/VSCode/work/Windows/Freshman_course_design/Second_Semester/car_info.txt" , ios::out | ios::trunc );
+	fout << "" << endl;
+	fout << ( N - ps_s ) << endl;
+	fout << count << endl;
+	for ( int i = 0; i < ( N - ps_s ); i++ )
+	{
+		fout << info->get_num ( ) << endl;
+		fout << info->get_color ( ) << endl;
+		fout << info->get_type_unm ( ) << endl;
+		fout << info->itime.get_year ( ) << endl;
+		fout << info->itime.get_month ( ) << endl;
+		fout << info->itime.get_day ( ) << endl;
+		fout << info->itime.get_hour ( ) << endl;
+		fout << info->itime.get_minute ( ) << endl;
+		fout << info->itime.get_second ( ) << endl;
+		info++;
+	}
+	info1 += 499;
+	for ( ;; )
+	{
+		if ( info1->get_num ( ) == " " ) break;
+		else
+		{
+			fout << info1->get_num ( ) << endl;
+			fout << info1->get_color ( ) << endl;
+			fout << info1->get_type_unm ( ) << endl;
+			fout << info1->itime.get_year ( ) << endl;
+			fout << info1->itime.get_month ( ) << endl;
+			fout << info1->itime.get_day ( ) << endl;
+			fout << info1->itime.get_hour ( ) << endl;
+			fout << info1->itime.get_minute ( ) << endl;
+			fout << info1->itime.get_second ( ) << endl;
+			fout << info1->otime.get_year ( ) << endl;
+			fout << info1->otime.get_month ( ) << endl;
+			fout << info1->otime.get_day ( ) << endl;
+			fout << info1->otime.get_hour ( ) << endl;
+			fout << info1->otime.get_minute ( ) << endl;
+			fout << info1->otime.get_second ( ) << endl;
+			fout << info1->get_p_t ( ) << endl;
+			info1--;
+		}
+	}
+	fout.close ( );
+	cout << "文件已保存" << endl;
 }
 
 int menu ( )
@@ -694,7 +815,7 @@ int menu ( )
 		cout.fill ( ' ' ); cout.width ( 10 );
 		cout << " " << "4.修改信息" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
-		cout << " " << "5.显示已在车库车辆信息" << endl;
+		cout << " " << "5.显示车辆信息" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
 		cout << " " << "6.删除车辆信息" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
@@ -709,11 +830,12 @@ int menu ( )
 		int n = 0;
 		string c;
 		n = choice_19 ( c );
+		cin.ignore ( );
 		switch ( n )
 		{
 			case 1:
 				k1.Add ( );
-				k1.display ( );
+				k1.display ( 1 );
 				break;
 			case 2:
 				k1.car_leave ( );
@@ -725,7 +847,8 @@ int menu ( )
 				k1.change ( );
 				break;
 			case 5:
-				k1.display ( );
+				k1.display ( 1 );
+				k1.display ( 2 );
 				break;
 			case 6:
 				k1.car_delete ( );
@@ -748,5 +871,5 @@ end0:
 //            Copyright@ Han 2020                   //
 //            Author:    Han                        //
 //            Email:     syhan1228@vip.qq.com       //
-//            Time:      2020-06-02 21:01:58        //
+//            Time:      2020-06-04 17:09:21        //
 //==================================================//

@@ -29,6 +29,7 @@ public:
 	void set_state ( );//设置车辆状态
 	void set_price ( int x );//计算停车费用
 	int get_type_unm ( );//得到车型数字型的
+	int get_p_t ( );
 	string get_num ( );//得到车牌号
 	string get_color ( );//得到车颜色
 	string get_type ( );//得到车型号
@@ -181,6 +182,12 @@ int car::get_type_unm ( )
 {
 	return type_num;
 }
+
+int car::get_p_t ( )
+{
+	return price_time;
+}
+
 //==================================================//
 //            Copyright@ Han 2020                   //
 //            Author:    Han                        //
