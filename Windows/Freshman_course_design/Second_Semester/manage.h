@@ -437,6 +437,7 @@ int manage::change ( )
 		if ( i == capacity - 1 )
 		{
 			cout << "记录为空！" << endl;
+			goto finish;
 		}
 	}
 	cout << "1.修改车牌号" << endl;
@@ -868,8 +869,8 @@ end0:
 	return 0;
 }
 //==================================================//
-//            Copyright@ Han 2020                   //
+//            Copyright© Han 2020                   //
 //            Author:    Han                        //
 //            Email:     syhan1228@vip.qq.com       //
-//            Time:      2020-06-04 17:09:21        //
+//            Time:      2020-06-10  20:33:27       //
 //==================================================//
