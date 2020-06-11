@@ -9,7 +9,9 @@ GBK和GB2312情况下可以，这个bug我也很懵逼*/
 #include<string>
 #include<Windows.h>
 #include"manage.h"
+
 using namespace std;
+
 int main ( )
 {
 	start ( );
@@ -21,9 +23,10 @@ int main ( )
 	Sleep ( 2000 );
 	return 0;
 }
+
 //==================================================//
-//            Copyright© Han 2020                   //
-//            Author:    Han                        //
+//            Copyright© 2020 Han,Shuoyu            //
+//            Author:    Han,Shuoyu                 //
 //            Email:     syhan1228@vip.qq.com       //
-//            Time:      2020-06-10  20:32:55       //
+//            Time:      2020-06-11 13:04:59        //
 //==================================================//

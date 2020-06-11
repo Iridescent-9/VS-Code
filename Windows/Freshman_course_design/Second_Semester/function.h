@@ -2,7 +2,9 @@
 #include<iostream>
 #include<math.h>
 #include"Car.h"
+
 using namespace std;
+
 int lapeyear ( int year2 )//闰年判断函数
 {
 	if ( ( year2 % 400 == 0 ) || ( year2 % 4 == 0 && year2 % 100 != 0 ) )
@@ -146,13 +148,13 @@ int price_base ( int day , car* d )
 {
 	double all_s;
 	int i;
-	int h , h1 , m , m1 , s , s1;
-	h = d->itime.get_hour ( );
-	h1 = d->otime.get_hour ( );
-	m = d->itime.get_minute ( );
-	m1 = d->otime.get_minute ( );
-	s = d->itime.get_second ( );
-	s1 = d->otime.get_second ( );
+	double h , h1 , m , m1 , s , s1;
+	h = ( double ) d->itime.get_hour ( );
+	h1 = ( double ) d->otime.get_hour ( );
+	m = ( double ) d->itime.get_minute ( );
+	m1 = ( double ) d->otime.get_minute ( );
+	s = ( double ) d->itime.get_second ( );
+	s1 = ( double ) d->otime.get_second ( );
 	if ( day != 0 )
 	{
 		if ( h1 > h )
@@ -180,6 +182,58 @@ int price_base ( int day , car* d )
 		}
 	}
 	return i;
+}
+
+void start ( )
+{
+	cout << endl << endl << endl << endl << endl << endl;
+	system ( " color 02" );
+	int all_block_num = 100;
+	for ( int i = 0; i < all_block_num; i++ )
+	{
+		if ( i < all_block_num - 1 )
+		{
+			printf ( "\r读取中[%.3lf%%]:" , i * 100.0 / ( all_block_num - 1 ) );
+		}
+		else
+		{
+			printf ( "\r读取完成[%.3lf%%]:" , i * 100.0 / ( all_block_num - 1 ) );
+		}
+		int show_num = i * 10 / all_block_num;
+		for ( int j = 1; j <= show_num; j++ )
+		{
+			cout << "█";
+			Sleep ( 10 );
+		}
+	}
+	system ( "CLS" );
+	system ( "color 07" );
+}
+
+void copyright ( )
+{
+	cout << endl << endl << endl;
+	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
+	cout << endl << endl << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "欢迎使用停车场管理系统" << endl << endl << endl;
+	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
+	Sleep ( 3000 );
+	system ( "CLS" );
+	cout << endl << endl << endl;
+	system ( "color 05" );
+	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
+	cout << endl << endl << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "Copyright@ HSY 2020" << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "Author HSY" << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "Time 2020-5" << endl << endl << endl;
+	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
+	Sleep ( 3000 );
+	system ( "CLS" );
+	system ( "color 07" );
 }
 
 int choice_12 ( string t )
@@ -258,61 +312,9 @@ test19:
 	}
 }
 
-void start ( )
-{
-	cout << endl << endl << endl << endl << endl << endl;
-	system ( " color 02" );
-	int all_block_num = 100;
-	for ( int i = 0; i < all_block_num; i++ )
-	{
-		if ( i < all_block_num - 1 )
-		{
-			printf ( "\r读取中[%.3lf%%]:" , i * 100.0 / ( all_block_num - 1 ) );
-		}
-		else
-		{
-			printf ( "\r读取完成[%.3lf%%]:" , i * 100.0 / ( all_block_num - 1 ) );
-		}
-		int show_num = i * 10 / all_block_num;
-		for ( int j = 1; j <= show_num; j++ )
-		{
-			cout << "█";
-			Sleep ( 10 );
-		}
-	}
-	system ( "CLS" );
-	system ( "color 07" );
-}
-
-void copyright ( )
-{
-	cout << endl << endl << endl;
-	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
-	cout << endl << endl << endl;
-	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "欢迎使用停车场管理系统" << endl << endl << endl;
-	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
-	Sleep ( 3000 );
-	system ( "CLS" );
-	cout << endl << endl << endl;
-	system ( "color 05" );
-	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
-	cout << endl << endl << endl;
-	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "Copyright@ HSY PFS 2020" << endl;
-	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "Author HSY PFS" << endl;
-	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "Time 2020-5" << endl << endl << endl;
-	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
-	Sleep ( 3000 );
-	system ( "CLS" );
-	system ( "color 07" );
-}
-
 //==================================================//
-//            Copyright@ Han 2020                   //
-//            Author:    Han                        //
+//            Copyright© 2020 Han,Shuoyu            //
+//            Author:    Han,Shuoyu                 //
 //            Email:     syhan1228@vip.qq.com       //
-//            Time:      2020-06-02 19:03:20        //
+//            Time:      2020-06-11 13:04:37        //
 //==================================================//

@@ -1,7 +1,10 @@
 ﻿#pragma once
+#pragma warning(disable:4244)
 #include<iostream>
 #include<math.h>
+
 using namespace std;
+
 class Time
 {
 private:
@@ -15,8 +18,8 @@ public:
 	int get_hour ( );
 	int get_minute ( );
 	int get_second ( );
-	void print_time ( );
 	long long int get_time ( );
+	friend ostream& operator<<( ostream& os , Time& t );
 };
 Time::Time ( )
 {
@@ -68,20 +71,22 @@ int Time::get_second ( )
 	return second;
 }
 
-void Time::print_time ( void )
-{
-	cout << year << "年" << month << "月" << day << "日  " << hour << ':' << minute << ':' << second;
-}
-
 long long int Time::get_time ( )
 {
 	long long int a;
 	a = year * pow ( 10 , 10 ) + month * pow ( 10 , 8 ) + day * pow ( 10 , 6 ) + hour * pow ( 10 , 4 ) + minute * pow ( 10 , 2 ) + second;
 	return a;
 }
+
+ostream& operator<<( ostream& os , Time& t )
+{
+	os << t.year << "年" << t.month << "月" << t.day << "日  " << t.hour << ':' << t.minute << ':' << t.second;
+	return os;
+}
+
 //==================================================//
-//            Copyright@ Han 2020                   //
-//            Author:    Han                        //
+//            Copyright© 2020 Han,Shuoyu            //
+//            Author:    Han,Shuoyu                 //
 //            Email:     syhan1228@vip.qq.com       //
-//            Time:      2020-05-19 22:19:47        //
+//            Time:      2020-06-11 13:04:23        //
 //==================================================//

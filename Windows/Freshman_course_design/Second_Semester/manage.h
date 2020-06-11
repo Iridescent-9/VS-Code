@@ -8,32 +8,34 @@
 #include"Car.h"
 #include"function.h"
 #define N 10
+
 using namespace std;
+
 class manage :public car
 {
 	car cars [ 500 ] , k , empty , * le;//对象数组acrs，删除离开时用到empty，排序时用到k，计算金额时用到 *le
 	int count = 0;//总记录数
 	int ps = N , ps_s = N;//总车位数，剩余车位数 Parking space
 	int capacity = 500;//最大记录数
-	int leave = 499;//离开车库时使用
+	int leave = 499;//离开车库时使用，前十个为在位车辆，历史记录从后向前排列
 	int car_s = 0 , lorry_s = 0 , lorry_m = 0 , lorry_l = 0;//小汽车，小卡，中卡，大卡
 public:
-	manage ( );
-	~manage ( );
+	manage ( );//无参构造函数
+	~manage ( );//析构，写文件
 	int Add ( );//入库
-	int search ( );//查找
-	int change ( );//修改
-	int car_leave ( );//车离开车库
 	int car_delete ( );//删除
-	int statistics_model ( int n );//统计车型，修改函数调用
-	void sort ( );//按照到达时间的排序
+	int car_leave ( );//车离开车库
+	int change ( );//修改
+	int search ( );//查找
 	void display ( int n );//显示车辆信息
-	void price_c ( int n , int a );//计算金额
-	void statistics_model_plus ( int n );//统计车型,增加
-	void statistics_model_minus ( int n );//统计车型，减少
-	void print_statistic ( );//输出统计信息
 	void info_read ( car* info );//读取车辆信息
 	void info_write ( car* info );//写车辆信息
+	void price_c ( int n , int a );//计算金额
+	void print_statistic ( );//输出统计信息
+	void sort ( );//按照到达时间的排序
+	void statistics_model ( int n );//统计车型，修改函数调用
+	void statistics_model_minus ( int n );//统计车型，减少
+	void statistics_model_plus ( int n );//统计车型,增加
 };
 
 manage::manage ( )
@@ -52,7 +54,7 @@ int manage::Add ( )
 {
 	string a , b;//车辆信息，a——车牌，b——颜色
 	int c;//车型
-	int l;
+	int l;//判断是否进车库
 	int iy = 0 , imo = 0 , id = 0 , ih = 0 , im = 0 , is = 0;//进入车库时间
 part1:
 	{
@@ -150,130 +152,59 @@ part2:
 	return 0;
 }
 
-void manage::display ( int n )
+int manage::car_delete ( )
 {
-	switch ( n )
+	string a;//车牌号
+	int i , j = 0 , ddd;//循环使用，判断是否删除成功的对象数组下标，判断是否进入删除
+start:
 	{
-		case 1:
-			cout << "以下为车库车辆信息" << endl;
-			for ( int i = 0; i < ps; i++ )
+		cout << "是否进入删除系统 1.是 2.否" << endl;
+		string t;
+		ddd = choice_12 ( t );
+		cin.ignore ( );
+		if ( ddd == 2 )
+		{
+			goto endl_l;
+		}
+		cout << "请输入你要删除的车辆信息:  " << endl;
+		cout << "车牌号: ";
+		getline ( cin , a );
+		if ( count == 0 ) cout << "记录为空!" << endl;
+		for ( i = 0; i < capacity; i++ )
+		{
+			if ( a == cars [ i ].get_num ( ) )
 			{
-				cars [ i ].car_base ( );
+				statistics_model_minus ( cars [ i ].get_type_unm ( ) );
+				cars [ i ] = empty;
+				if ( i <= ps )
+				{
+					ps_s++;
+				}
+				count--;
+				j = i;
 			}
-			cout << endl;
-			break;
-		case 2:
-			for ( int i = 499; i > ps; i-- )
-			{
-				if ( cars [ i ].get_num ( ) != " " )goto s;
-				else
-				{
-					if ( i == ps + 1 )
-					{
-						cout << "没有车辆离开" << endl;
-						goto ed;
-					}
-				}
-			}
-		s:
-			cout << "以下为已离开车辆信息" << endl;
-			for ( int i = 499; i > ps; i-- )
-			{
-				if ( cars [ i ].get_num ( ) != " " )
-				{
-					cars [ i ].car_history ( );
-				}
-			}
-		ed:
-			break;
-		default:
-			break;
+		}
+		if ( cars [ j ].get_num ( ) == " " )
+		{
+			cout << "删除成功" << endl;
+			sort ( );
+		}
+		else
+		{
+			cout << "删除失败，请重新开始";
+			goto start;
+		}
+		sort ( );
 	}
-}
-
-int manage::search ( )
-{
-	int a , i;
-	string b;//车牌号
-	int c;//车型
-	cout << "请输入查询车辆信息方式:  1.按照车牌号查询  2.按照车型查询" << endl;
-	string t;
-	a = choice_12 ( t );
-	cin.ignore ( );
-	if ( count == 0 )
-	{
-		cout << "历史记录为空!" << endl;
-	}
-	switch ( a )
-	{
-		case 1:
-			{
-				cout << "请输入你要查询的车牌号:" << endl;
-				getline ( cin , b );
-				for ( i = 0; i < capacity; i++ )
-				{
-					if ( b == cars [ i ].get_num ( ) )
-					{
-						if ( cars [ i ].get_state ( ) == "in" )
-						{
-							cars [ i ].car_base ( );
-							goto e;
-						}
-						else
-						{
-							if ( cars [ i ].get_state ( ) == "leave" )
-							{
-								cars [ i ].car_history ( );
-								goto e;
-							}
-						}
-					}
-					if ( i + 1 == capacity )
-					{
-						cout << "历史记录为空！" << endl;
-						break;
-					}
-				}
-			};
-		e:
-			break;
-		case 2:
-			{
-				cout << "请输入查询的车的车型数字(1.小汽车 2.小卡 3.中卡 4.大卡):" << endl;
-				string t1;
-				c = choice_14 ( t1 );
-				cin.ignore ( );
-				statistics_model ( c );
-				for ( i = 0; i < capacity; i++ )
-				{
-					if ( c == cars [ i ].get_type_unm ( ) )
-					{
-						if ( cars [ i ].get_state ( ) == "in" )
-						{
-							cars [ i ].car_base ( );
-						}
-						else
-						{
-							for ( int j = count; j < capacity; j++ )
-							{
-								if ( cars [ j ].get_state ( ) == "leave" )
-								{
-									cars [ j ].car_history ( );
-								}
-							}
-						}
-					}
-				}
-			};
-			break;
-	}
+endl_l:
+	info_write ( cars );
 	return 0;
 }
 
 int manage::car_leave ( )
 {
-	int index = 0 , lll = 0;
-	string b;
+	int index = 0 , lll = 0;//给计算车费函数的下标，判断是否进入离开系统
+	string b;//车牌号
 	display ( 1 );
 	cout << "是否有车辆要离开 1.是 2.否" << endl;
 	string t;
@@ -317,99 +248,12 @@ partend:
 	return 0;
 }
 
-void manage::price_c ( int n , int a )
-{
-	switch ( n )
-	{
-		case 1:
-			{
-				int oy , omo , od , oh , om , os , inde = a , day_c , l = leave , p;
-				cout << "请输入该车离开时间" << endl;
-				cout << "年："; cin >> oy;
-				cout << "月："; cin >> omo;
-				cout << "日："; cin >> od;
-				cout << "时："; cin >> oh;
-				cout << "分："; cin >> om;
-				cout << "秒："; cin >> os;
-				cin.ignore ( );
-				cars [ leave ] = cars [ inde ];
-				cars [ inde ] = empty;
-				le = &cars [ leave ];
-				le->set_otime ( oy , omo , od , oh , om , os );
-				le->set_state ( );
-				day_c = d ( le );
-				p = price_base ( day_c , le );
-				le->set_price ( p );
-				le->car_history ( );
-				sort ( );
-				leave--;
-				ps_s++;
-				break;
-			}
-		case 2:
-			{
-				int oy , omo , od , oh , om , os , inde = a , day_c , p;
-				cout << "请输入该车离开时间" << endl;
-				cout << "年："; cin >> oy;
-				cout << "月："; cin >> omo;
-				cout << "日："; cin >> od;
-				cout << "时："; cin >> oh;
-				cout << "分："; cin >> om;
-				cout << "秒："; cin >> os;
-				cin.ignore ( );
-				le = &cars [ a ];
-				le->set_otime ( oy , omo , od , oh , om , os );
-				day_c = d ( le );
-				p = price_base ( day_c , le );
-				le->set_price ( p );
-				le->car_history ( );
-				break;
-			}
-		case 3:
-			{
-				int iy , imo , id , ih , im , is , inde = a , day_c , p;
-				cout << "请输入该车入库时间" << endl;
-				cout << "年："; cin >> iy;
-				cout << "月："; cin >> imo;
-				cout << "日："; cin >> id;
-				cout << "时："; cin >> ih;
-				cout << "分："; cin >> im;
-				cout << "秒："; cin >> is;
-				cin.ignore ( );
-				le = &cars [ a ];
-				le->set_itime ( iy , imo , id , ih , im , is );
-				day_c = d ( le );
-				p = price_base ( day_c , le );
-				le->set_price ( p );
-				break;
-			}
-		default:
-			break;
-	}
-}
-
-void manage::sort ( )
-{
-	for ( int i = 0; i < ps + 1; i++ )
-	{
-		for ( int j = 0; j < ps + 1; j++ )
-		{
-			if ( cars [ j ].itime.get_time ( ) > cars [ j + 1 ].itime.get_time ( ) )
-			{
-				k = cars [ j ];
-				cars [ j ] = cars [ j + 1 ];
-				cars [ j + 1 ] = k;
-			}
-		}
-	}
-}
-
 int manage::change ( )
 {
 	string a;//车牌号
 	int c;// 可以选择修改方式
 	int b = 0;//下标
-	int i , t , kkk = 0;
+	int i , t , kkk = 0;//循环使用，车型号码，判断是否进入修改系统
 	string d;//修改后的数据
 	string t1 , t2;
 	cout << "是否进入修改系统 1.是 2.否" << endl;
@@ -548,147 +392,124 @@ finish:
 	return 0;
 }
 
-int manage::car_delete ( )
+int manage::search ( )
 {
-	string a;
-	int i , j = 0 , ddd;
-start:
+	int a , i;//判断是否进入查找系统，循环使用
+	string b;//车牌号
+	int c;//车型
+	cout << "请输入查询车辆信息方式:  1.按照车牌号查询  2.按照车型查询" << endl;
+	string t;
+	a = choice_12 ( t );
+	cin.ignore ( );
+	if ( count == 0 )
 	{
-		cout << "是否进入删除系统 1.是 2.否" << endl;
-		string t;
-		ddd = choice_12 ( t );
-		cin.ignore ( );
-		if ( ddd == 2 )
-		{
-			goto endl_l;
-		}
-		cout << "请输入你要删除的车辆信息:  " << endl;
-		cout << "车牌号: ";
-		getline ( cin , a );
-		if ( count == 0 ) cout << "记录为空!" << endl;
-		for ( i = 0; i < capacity; i++ )
-		{
-			if ( a == cars [ i ].get_num ( ) )
+		cout << "历史记录为空!" << endl;
+	}
+	switch ( a )
+	{
+		case 1:
 			{
-				statistics_model_minus ( cars [ i ].get_type_unm ( ) );
-				cars [ i ] = empty;
-				if ( i <= ps )
+				cout << "请输入你要查询的车牌号:" << endl;
+				getline ( cin , b );
+				for ( i = 0; i < capacity; i++ )
 				{
-					ps_s++;
+					if ( b == cars [ i ].get_num ( ) )
+					{
+						if ( cars [ i ].get_state ( ) == "in" )
+						{
+							cars [ i ].car_base ( );
+							goto e;
+						}
+						else
+						{
+							if ( cars [ i ].get_state ( ) == "leave" )
+							{
+								cars [ i ].car_history ( );
+								goto e;
+							}
+						}
+					}
+					if ( i + 1 == capacity )
+					{
+						cout << "历史记录为空！" << endl;
+						break;
+					}
 				}
-				count--;
-				j = i;
-			}
-		}
-		if ( cars [ j ].get_num ( ) == " " )
-		{
-			cout << "删除成功" << endl;
-			sort ( );
-		}
-		else
-		{
-			cout << "删除失败，请重新开始";
-			goto start;
-		}
-		sort ( );
-	}
-endl_l:
-	info_write ( cars );
-	return 0;
-}
-
-int manage::statistics_model ( int n )
-{
-	switch ( n )
-	{
-		case 1:
-			if ( car_s == 0 )
-			{
-				cout << "该车型记录为空" << endl;
-			}
+			};
+		e:
 			break;
 		case 2:
-			if ( lorry_s == 0 )
 			{
-				cout << "该车型记录为空" << endl;
-			}
-			break;
-		case 3:
-			if ( lorry_m == 0 )
-			{
-				cout << "该车型记录为空" << endl;
-			}
-			break;
-		case 4:
-			if ( lorry_l == 0 )
-			{
-				cout << "该车型记录为空" << endl;
-			}
-			break;
-		default:
+				cout << "请输入查询的车的车型数字(1.小汽车 2.小卡 3.中卡 4.大卡):" << endl;
+				string t1;
+				c = choice_14 ( t1 );
+				cin.ignore ( );
+				statistics_model ( c );
+				for ( i = 0; i < capacity; i++ )
+				{
+					if ( c == cars [ i ].get_type_unm ( ) )
+					{
+						if ( cars [ i ].get_state ( ) == "in" )
+						{
+							cars [ i ].car_base ( );
+						}
+						else
+						{
+							for ( int j = count; j < capacity; j++ )
+							{
+								if ( cars [ j ].get_state ( ) == "leave" )
+								{
+									cars [ j ].car_history ( );
+								}
+							}
+						}
+					}
+				}
+			};
 			break;
 	}
 	return 0;
 }
 
-void manage::statistics_model_plus ( int n )
+void manage::display ( int n )
 {
 	switch ( n )
 	{
 		case 1:
-			car_s++;
+			cout << "以下为车库车辆信息" << endl;
+			for ( int i = 0; i < ps; i++ )
+			{
+				cars [ i ].car_base ( );
+			}
+			cout << endl;
 			break;
 		case 2:
-			lorry_s++;
-			break;
-		case 3:
-			lorry_m++;
-			break;
-		case 4:
-			lorry_l++;
+			for ( int i = 499; i > ps; i-- )
+			{
+				if ( cars [ i ].get_num ( ) != " " )goto s;
+				else
+				{
+					if ( i == ps + 1 )
+					{
+						cout << "没有车辆离开" << endl;
+						goto ed;
+					}
+				}
+			}
+		s:
+			cout << "以下为已离开车辆信息" << endl;
+			for ( int i = 499; i > ps; i-- )
+			{
+				if ( cars [ i ].get_num ( ) != " " )
+				{
+					cars [ i ].car_history ( );
+				}
+			}
+		ed:
 			break;
 		default:
 			break;
 	}
-}
-
-void manage::statistics_model_minus ( int n )
-{
-	switch ( n )
-	{
-		case 1:
-			car_s--;
-			break;
-		case 2:
-			lorry_s--;
-			break;
-		case 3:
-			lorry_m--;
-			break;
-		case 4:
-			lorry_l--;
-			break;
-		default:
-			break;
-	}
-}
-
-void manage::print_statistic ( )
-{
-	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
-	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "停车场共有" << count << "条记录" << endl;
-	cout.fill ( ' ' ); cout.width ( 5 );
-	cout << " " << "其中" << endl;
-	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "小汽车有：" << car_s << endl;
-	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "小卡有：" << lorry_s << endl;
-	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "中卡有：" << lorry_m << endl;
-	cout.fill ( ' ' ); cout.width ( 10 );
-	cout << " " << "大卡有：" << lorry_l << endl;
-	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
 }
 
 void manage::info_read ( car* info )
@@ -696,11 +517,10 @@ void manage::info_read ( car* info )
 	car* info1 = info;
 	string a , b;//车辆信息，a——车牌，b——颜色
 	string c;//车型
-	string l;
 	string iy , imo , id , ih , im , is;//进入车库时间
-	string oy , omo , od , oh , om , os , t_p;
-	string str , str1;
-	int j;
+	string oy , omo , od , oh , om , os , t_p;//离开车库时间，停车时长
+	string str , str1;//停车位车辆数，总记录车辆数
+	int j;//停车位车辆数
 	ifstream fin("D:/VSCode/work/Windows/Freshman_course_design/Second_Semester/car_info.txt");//此处为绝对路径，克隆到本地后需注意//此处为绝对路径，克隆到本地后需注意
 	if(!fin)
 	{
@@ -726,9 +546,9 @@ void manage::info_read ( car* info )
 		ps_s--;
 	}
 	sort ( );
-	if ( count > j )
+	if ( count > j )//如果总记录数大于停车位车辆数，后面继续读取的数据为已经离开车辆的历史记录
 	{
-		info1 += 499;
+		info1 += 499;//指针偏移至历史记录最后一个
 		for ( int i = 0; i < ( count - j ); i++ )
 		{
 			getline ( fin , a );
@@ -755,10 +575,10 @@ void manage::info_read ( car* info )
 void manage::info_write ( car* info )
 {
 	car* info1 = info;
-	fstream fout ( "D:/VSCode/work/Windows/Freshman_course_design/Second_Semester/car_info.txt" , ios::out | ios::trunc );
+	fstream fout ( "D:/VSCode/work/Windows/Freshman_course_design/Second_Semester/car_info.txt" , ios::out | ios::trunc );//打开文件并清空内容，重新写入
 	fout << "" << endl;
-	fout << ( N - ps_s ) << endl;
-	fout << count << endl;
+	fout << ( N - ps_s ) << endl;//写入停车位车辆个数
+	fout << count << endl;//写入总记录数
 	for ( int i = 0; i < ( N - ps_s ); i++ )
 	{
 		fout << info->get_num ( ) << endl;
@@ -801,7 +621,187 @@ void manage::info_write ( car* info )
 	cout << "文件已保存" << endl;
 }
 
-int menu ( )
+void manage::price_c ( int n , int a )
+{
+	switch ( n )
+	{
+		case 1://离开函数调用；修改函数，车辆未离开时调用
+			{
+				int oy , omo , od , oh , om , os , inde = a , day_c , l = leave , p;
+				cout << "请输入该车离开时间" << endl;
+				cout << "年："; cin >> oy;
+				cout << "月："; cin >> omo;
+				cout << "日："; cin >> od;
+				cout << "时："; cin >> oh;
+				cout << "分："; cin >> om;
+				cout << "秒："; cin >> os;
+				cin.ignore ( );
+				cars [ leave ] = cars [ inde ];
+				cars [ inde ] = empty;
+				le = &cars [ leave ];
+				le->set_otime ( oy , omo , od , oh , om , os );
+				le->set_state ( );
+				day_c = d ( le );
+				p = price_base ( day_c , le );
+				le->set_price ( p );
+				le->car_history ( );
+				sort ( );
+				leave--;
+				ps_s++;
+				break;
+			}
+		case 2://修改函数，车辆已经离开时调用
+			{
+				int oy , omo , od , oh , om , os , inde = a , day_c , p;
+				cout << "请输入该车离开时间" << endl;
+				cout << "年："; cin >> oy;
+				cout << "月："; cin >> omo;
+				cout << "日："; cin >> od;
+				cout << "时："; cin >> oh;
+				cout << "分："; cin >> om;
+				cout << "秒："; cin >> os;
+				cin.ignore ( );
+				le = &cars [ a ];
+				le->set_otime ( oy , omo , od , oh , om , os );
+				day_c = d ( le );
+				p = price_base ( day_c , le );
+				le->set_price ( p );
+				le->car_history ( );
+				break;
+			}
+		case 3://修改入库时间
+			{
+				int iy , imo , id , ih , im , is , inde = a , day_c , p;
+				cout << "请输入该车入库时间" << endl;
+				cout << "年："; cin >> iy;
+				cout << "月："; cin >> imo;
+				cout << "日："; cin >> id;
+				cout << "时："; cin >> ih;
+				cout << "分："; cin >> im;
+				cout << "秒："; cin >> is;
+				cin.ignore ( );
+				le = &cars [ a ];
+				le->set_itime ( iy , imo , id , ih , im , is );
+				day_c = d ( le );
+				p = price_base ( day_c , le );
+				le->set_price ( p );
+				break;
+			}
+		default:
+			break;
+	}
+}
+
+void manage::print_statistic ( )
+{
+	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "停车场共有" << count << "条记录" << endl;
+	cout.fill ( ' ' ); cout.width ( 5 );
+	cout << " " << "其中" << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "小汽车有：" << car_s << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "小卡有：" << lorry_s << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "中卡有：" << lorry_m << endl;
+	cout.fill ( ' ' ); cout.width ( 10 );
+	cout << " " << "大卡有：" << lorry_l << endl;
+	cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
+}
+
+void manage::sort ( )
+{
+	for ( int i = 0; i < ps + 1; i++ )
+	{
+		for ( int j = 0; j < ps + 1; j++ )
+		{
+			if ( cars [ j ].itime.get_time ( ) > cars [ j + 1 ].itime.get_time ( ) )
+			{
+				k = cars [ j ];
+				cars [ j ] = cars [ j + 1 ];
+				cars [ j + 1 ] = k;
+			}
+		}
+	}
+}
+
+void manage::statistics_model ( int n )
+{
+	switch ( n )
+	{
+		case 1:
+			if ( car_s == 0 )
+			{
+				cout << "该车型记录为空" << endl;
+			}
+			break;
+		case 2:
+			if ( lorry_s == 0 )
+			{
+				cout << "该车型记录为空" << endl;
+			}
+			break;
+		case 3:
+			if ( lorry_m == 0 )
+			{
+				cout << "该车型记录为空" << endl;
+			}
+			break;
+		case 4:
+			if ( lorry_l == 0 )
+			{
+				cout << "该车型记录为空" << endl;
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+void manage::statistics_model_minus ( int n )
+{
+	switch ( n )
+	{
+		case 1:
+			car_s--;
+			break;
+		case 2:
+			lorry_s--;
+			break;
+		case 3:
+			lorry_m--;
+			break;
+		case 4:
+			lorry_l--;
+			break;
+		default:
+			break;
+	}
+}
+
+void manage::statistics_model_plus ( int n )
+{
+	switch ( n )
+	{
+		case 1:
+			car_s++;
+			break;
+		case 2:
+			lorry_s++;
+			break;
+		case 3:
+			lorry_m++;
+			break;
+		case 4:
+			lorry_l++;
+			break;
+		default:
+			break;
+	}
+}
+
+int menu ( )//菜单
 {
 	manage k1;
 	while ( 1 )
@@ -868,9 +868,10 @@ int menu ( )
 end0:
 	return 0;
 }
+
 //==================================================//
-//            Copyright© Han 2020                   //
-//            Author:    Han                        //
+//            Copyright© 2020 Han,Shuoyu            //
+//            Author:    Han,Shuoyu                 //
 //            Email:     syhan1228@vip.qq.com       //
-//            Time:      2020-06-10  20:33:27       //
+//            Time:      2020-06-11 13:04:53        //
 //==================================================//
