@@ -7,21 +7,24 @@
 #include<cstring>
 #include"Car.h"
 #include"function.h"
-#define N 10
-
+#define PS 10
+#define PS_S PS
+#define CAP 500
+#define LE CAP-1
 using namespace std;
 
 class manage :public car
 {
-	car cars [ 500 ] , k , empty , * le;//对象数组acrs，删除离开时用到empty，排序时用到k，计算金额时用到 *le
-	int count = 0;//总记录数
-	int ps = N , ps_s = N;//总车位数，剩余车位数 Parking space
-	int capacity = 500;//最大记录数
-	int leave = 499;//离开车库时使用，前十个为在位车辆，历史记录从后向前排列
-	int car_s = 0 , lorry_s = 0 , lorry_m = 0 , lorry_l = 0;//小汽车，小卡，中卡，大卡
+	car cars [ CAP ] , k , empty , * le;//对象数组acrs，删除离开时用到empty，排序时用到k，计算金额时用到 *le
+	static int count;//总记录数
+	static int ps , ps_s;//总车位数，剩余车位数 Parking space
+	static int capacity;//最大记录数
+	static int leave;//离开车库时使用，前十个为在位车辆，历史记录从后向前排列
+	static int car_s , lorry_s , lorry_m , lorry_l;//小汽车，小卡，中卡，大卡
 public:
 	manage ( );//无参构造函数
 	~manage ( );//析构，写文件
+	friend ostream& operator<<( ostream& os , manage& m );//运算符重载输出车库信息
 	int Add ( );//入库
 	int car_delete ( );//删除
 	int car_leave ( );//车离开车库
@@ -37,6 +40,15 @@ public:
 	void statistics_model_minus ( int n );//统计车型，减少
 	void statistics_model_plus ( int n );//统计车型,增加
 };
+int manage::capacity = CAP;
+int manage::leave = LE;
+int manage::car_s = 0;
+int manage::lorry_s = 0;
+int manage::lorry_m = 0;
+int manage::lorry_l = 0;
+int manage::ps = PS;
+int manage::ps_s = PS_S;
+int manage::count = 0;
 
 manage::manage ( )
 {
@@ -48,6 +60,12 @@ manage::~manage ( )
 	system ( "CLS" );
 	info_write ( cars );
 	Sleep ( 2000 );
+}
+
+ostream& operator<<( ostream& os , manage& m )
+{
+	os << "停车场共有" << m.ps << "个车位，还剩余" << m.ps_s << "个车位";
+	return os;
 }
 
 int manage::Add ( )
@@ -65,7 +83,6 @@ part1:
 		}
 		else
 		{
-			cout << "车库还有" << ps_s << "个停车位" << endl;
 			cout << "是否进入车库：1.是 2.否" << endl;
 			string t;
 			l = choice_12 ( t );
@@ -455,12 +472,9 @@ int manage::search ( )
 						}
 						else
 						{
-							for ( int j = count; j < capacity; j++ )
+							if ( cars [ i ].get_state ( ) == "leave" )
 							{
-								if ( cars [ j ].get_state ( ) == "leave" )
-								{
-									cars [ j ].car_history ( );
-								}
+								cars [ i ].car_history ( );
 							}
 						}
 					}
@@ -484,7 +498,7 @@ void manage::display ( int n )
 			cout << endl;
 			break;
 		case 2:
-			for ( int i = 499; i > ps; i-- )
+			for ( int i = capacity - 1; i > ps; i-- )
 			{
 				if ( cars [ i ].get_num ( ) != " " )goto s;
 				else
@@ -498,7 +512,7 @@ void manage::display ( int n )
 			}
 		s:
 			cout << "以下为已离开车辆信息" << endl;
-			for ( int i = 499; i > ps; i-- )
+			for ( int i = capacity - 1; i > ps; i-- )
 			{
 				if ( cars [ i ].get_num ( ) != " " )
 				{
@@ -533,10 +547,10 @@ void manage::info_read ( car* info )
 	count = stoi ( str1 , 0 , 10 );
 	for ( int i = 0; i < j; i++ )
 	{
-		getline ( fin , a );
-		getline ( fin , b );
-		getline ( fin , c );
-		getline ( fin , iy ); getline ( fin , imo ); getline ( fin , id ); getline ( fin , ih ); getline ( fin , im ); getline ( fin , is );
+		fin >> a;
+		fin >> b;
+		fin >> c;
+		fin >> iy; fin >> imo; fin >> id; fin >> ih; fin >> im; fin >> is;
 		info->set_car_num ( a );
 		info->set_color ( b );
 		info->set_type ( stoi ( c , 0 , 10 ) );
@@ -548,15 +562,15 @@ void manage::info_read ( car* info )
 	sort ( );
 	if ( count > j )//如果总记录数大于停车位车辆数，后面继续读取的数据为已经离开车辆的历史记录
 	{
-		info1 += 499;//指针偏移至历史记录最后一个
+		info1 += capacity - 1;//指针偏移至历史记录最后一个
 		for ( int i = 0; i < ( count - j ); i++ )
 		{
-			getline ( fin , a );
-			getline ( fin , b );
-			getline ( fin , c );
-			getline ( fin , iy ); getline ( fin , imo ); getline ( fin , id ); getline ( fin , ih ); getline ( fin , im ); getline ( fin , is );
-			getline ( fin , oy ); getline ( fin , omo ); getline ( fin , od ); getline ( fin , oh ); getline ( fin , om ); getline ( fin , os );
-			getline ( fin , t_p );
+			fin >> a;
+			fin >> b;
+			fin >> c;
+			fin >> iy; fin >> imo; fin >> id; fin >> ih; fin >> im; fin >> is;
+			fin >> oy; fin >> omo; fin >> od; fin >> oh; fin >> om; fin >> os;
+			fin >> t_p;
 			info1->set_car_num ( a );
 			info1->set_color ( b );
 			info1->set_type ( stoi ( c , 0 , 10 ) );
@@ -577,45 +591,41 @@ void manage::info_write ( car* info )
 	car* info1 = info;
 	fstream fout ( "D:/VSCode/work/Windows/Freshman_course_design/Second_Semester/car_info.txt" , ios::out | ios::trunc );//打开文件并清空内容，重新写入
 	fout << "" << endl;
-	fout << ( N - ps_s ) << endl;//写入停车位车辆个数
+	fout << ( ps - ps_s ) << endl;//写入停车位车辆个数
 	fout << count << endl;//写入总记录数
-	for ( int i = 0; i < ( N - ps_s ); i++ )
+	for ( int i = 0; i < ( ps - ps_s ); i++ )
 	{
-		fout << info->get_num ( ) << endl;
-		fout << info->get_color ( ) << endl;
-		fout << info->get_type_unm ( ) << endl;
-		fout << info->itime.get_year ( ) << endl;
-		fout << info->itime.get_month ( ) << endl;
-		fout << info->itime.get_day ( ) << endl;
-		fout << info->itime.get_hour ( ) << endl;
-		fout << info->itime.get_minute ( ) << endl;
-		fout << info->itime.get_second ( ) << endl;
+		fout << info->get_num ( ) << '\t';
+		fout << info->get_color ( ) << '\t';
+		fout << info->get_type_unm ( ) << '\t';
+		fout << info->itime.get_year ( ) << '\t';
+		fout << info->itime.get_month ( ) << '\t';
+		fout << info->itime.get_day ( ) << '\t';
+		fout << info->itime.get_hour ( ) << '\t';
+		fout << info->itime.get_minute ( ) << '\t';
+		fout << info->itime.get_second ( ) << '\t' << endl;
 		info++;
 	}
-	info1 += 499;
-	for ( ;; )
+	info1 += capacity - 1;
+	while ( info1->get_num ( ) != " " )
 	{
-		if ( info1->get_num ( ) == " " ) break;
-		else
-		{
-			fout << info1->get_num ( ) << endl;
-			fout << info1->get_color ( ) << endl;
-			fout << info1->get_type_unm ( ) << endl;
-			fout << info1->itime.get_year ( ) << endl;
-			fout << info1->itime.get_month ( ) << endl;
-			fout << info1->itime.get_day ( ) << endl;
-			fout << info1->itime.get_hour ( ) << endl;
-			fout << info1->itime.get_minute ( ) << endl;
-			fout << info1->itime.get_second ( ) << endl;
-			fout << info1->otime.get_year ( ) << endl;
-			fout << info1->otime.get_month ( ) << endl;
-			fout << info1->otime.get_day ( ) << endl;
-			fout << info1->otime.get_hour ( ) << endl;
-			fout << info1->otime.get_minute ( ) << endl;
-			fout << info1->otime.get_second ( ) << endl;
-			fout << info1->get_p_t ( ) << endl;
-			info1--;
-		}
+		fout << info1->get_num ( ) << '\t';
+		fout << info1->get_color ( ) << '\t';
+		fout << info1->get_type_unm ( ) << '\t';
+		fout << info1->itime.get_year ( ) << '\t';
+		fout << info1->itime.get_month ( ) << '\t';
+		fout << info1->itime.get_day ( ) << '\t';
+		fout << info1->itime.get_hour ( ) << '\t';
+		fout << info1->itime.get_minute ( ) << '\t';
+		fout << info1->itime.get_second ( ) << '\t';
+		fout << info1->otime.get_year ( ) << '\t';
+		fout << info1->otime.get_month ( ) << '\t';
+		fout << info1->otime.get_day ( ) << '\t';
+		fout << info1->otime.get_hour ( ) << '\t';
+		fout << info1->otime.get_minute ( ) << '\t';
+		fout << info1->otime.get_second ( ) << '\t';
+		fout << info1->get_p_t ( ) << '\t' << endl;
+		info1--;
 	}
 	fout.close ( );
 	cout << "文件已保存" << endl;
@@ -825,7 +835,10 @@ int menu ( )//菜单
 		cout << " " << "8.清屏" << endl;
 		cout.fill ( ' ' ); cout.width ( 10 );
 		cout << " " << "9.退出系统" << endl;
+		cout.fill ( ' ' ); cout.width ( 10 );
 		cout << "停车每小时3元，停车半小时内不收费" << endl;
+		cout.fill ( ' ' ); cout.width ( 10 );
+		cout << k1 << endl;
 		cout.fill ( '-' ); cout.width ( 50 ); cout << "-" << endl;
 		cout << "输入功能序号" << endl;
 		int n = 0;
@@ -873,5 +886,5 @@ end0:
 //            Copyright© 2020 Han,Shuoyu            //
 //            Author:    Han,Shuoyu                 //
 //            Email:     syhan1228@vip.qq.com       //
-//            Time:      2020-06-11 13:04:53        //
+//            Time:      2020-06-16 17:25:56        //
 //==================================================//
