@@ -31,7 +31,7 @@ public:
 	int change ( );//修改
 	int search ( );//查找
 	void display ( int n );//显示车辆信息
-	void info_read ( car* info );//读取车辆信息
+	int info_read ( car* info );//读取车辆信息
 	void info_write ( car* info );//写车辆信息
 	void price_c ( int n , int a );//计算金额
 	void print_statistic ( );//输出统计信息
@@ -526,7 +526,7 @@ void manage::display ( int n )
 	}
 }
 
-void manage::info_read ( car* info )
+int manage::info_read ( car* info )
 {
 	car* info1 = info;
 	string a , b;//车辆信息，a——车牌，b——颜色
@@ -539,10 +539,16 @@ void manage::info_read ( car* info )
 	if(!fin)
 	{
 		cout<<"文件打开失败"<<endl;
+		ofstream fout( "D:/VSCode/work/Windows/Freshman_course_design/Second_Semester/car_info.txt" );
+		fout<<" "<<endl;
+		fout<<" "<<endl;
+		fout.close();
+		return 0;
 	}
 	getline ( fin , str );
 	getline ( fin , str );
 	getline ( fin , str1 );
+	if(str==" ") return 0;
 	j = stoi ( str , 0 , 10 );
 	count = stoi ( str1 , 0 , 10 );
 	for ( int i = 0; i < j; i++ )
@@ -584,6 +590,7 @@ void manage::info_read ( car* info )
 		}
 	}
 	fin.close ( );
+	return 0;
 }
 
 void manage::info_write ( car* info )
