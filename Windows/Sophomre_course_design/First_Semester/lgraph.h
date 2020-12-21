@@ -1,9 +1,9 @@
 //File's name:lgraph.h
-//File's path:D:\VSCode\work\Windows\Sophomre_course_design\First_Semester\lgraph.h
+//File's path:D:\VSCode\C++\lgraph.h
 //==================================================//
 //            Author:          Han,Shuoyu           //
 //            Email:           syhan1228@vip.qq.com //
-//            Creat Time:      2020-12-18  21:48:11 //
+//            Creat Time:      2020-12-18  23:01:34 //
 //==================================================//
 #ifndef _LGRAPH_H_
 #define _LGRAPH_H_
@@ -26,7 +26,7 @@ public:
     bool insertV(string);
     bool insertE(int, int, int);
     bool insertE(string, string, int);
-    lgraph(vector<string> v) : graph(v) { setadjL(); };
+    lgraph() { setadjL(); };
 };
 
 bool lgraph::topsort()

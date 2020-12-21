@@ -1,9 +1,9 @@
 //File's name:graph.h
-//File's path:D:\VSCode\work\Windows\Sophomre_course_design\First_Semester\graph.h
+//File's path:D:\VSCode\C++\graph.h
 //==================================================//
 //            Author:          Han,Shuoyu           //
 //            Email:           syhan1228@vip.qq.com //
-//            Creat Time:      2020-12-18  21:47:49 //
+//            Creat Time:      2020-12-18  23:01:01 //
 //==================================================//
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
@@ -19,20 +19,15 @@ protected:
     map<string, int> iov;
 
 public:
-    graph(vector<string>);
+    graph();
     virtual bool insertV(string);
     virtual bool insertE(string, string, int);
     virtual bool insertE(int first, int secend, int weight) = 0;
 };
 
-graph::graph(vector<string> v)
+graph::graph()
 {
-    nv = v.size();
-    vectors = v;
-    for (int i = 0; i < nv; i++)
-    {
-        iov[v[i]] = i;
-    }
+    nv = 0;
 }
 
 bool graph::insertV(string v)
