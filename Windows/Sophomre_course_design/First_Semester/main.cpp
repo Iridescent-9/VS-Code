@@ -11,12 +11,12 @@
 #include "function.h"
 using namespace std;
 
-int main()
+int main ( )
 {
-    system("chcp 65001");
-    system("cls");
-    menu();
-    getchar();
-    getchar();
+    system ( "chcp 65001" );
+    system ( "cls" );
+    menu ( );
+    getchar ( );
+    getchar ( );
     return 0;
 }
